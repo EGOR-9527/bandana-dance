@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/static/css/main.fbc412d5.css",
-    "main.js": "/static/js/main.57f79dd4.js",
-    "static/media/Inter.ttf": "/static/media/Inter.e05c5f3d1fa6a3893d84.ttf",
-    "static/media/Roboto.ttf": "/static/media/Roboto.3c9d0f6513f7cfe91016.ttf",
-    "static/media/bog.png": "/static/media/bog.f0dbb1740fa90b8aab50.png",
-    "static/media/RussoOne.ttf": "/static/media/RussoOne.b2f5b287ccb8fd446eae.ttf",
-    "static/media/vk.svg": "/static/media/vk.80049a0022fc049d60fa6581b83a8735.svg",
-    "static/media/bot.svg": "/static/media/bot.9246240abfc83680c4c9c60aaaae195e.svg",
-    "static/media/tg.svg": "/static/media/tg.f1d7a6350c5341f1cb34300aa081ffb9.svg",
-    "index.html": "/index.html",
-    "static/media/next.svg": "/static/media/next.7cc38a7bcee5be3fd489c0fd5c7a89d1.svg",
-    "static/media/back.svg": "/static/media/back.bee0ee787cc8d7b20c30e5274c4fc109.svg",
-    "main.fbc412d5.css.map": "/static/css/main.fbc412d5.css.map",
-    "main.57f79dd4.js.map": "/static/js/main.57f79dd4.js.map"
+    "main.css": "/bandana-dance/static/css/main.0ae7a75f.css",
+    "main.js": "/bandana-dance/static/js/main.21a753b3.js",
+    "static/media/Inter.ttf": "/bandana-dance/static/media/Inter.e05c5f3d1fa6a3893d84.ttf",
+    "static/media/Roboto.ttf": "/bandana-dance/static/media/Roboto.3c9d0f6513f7cfe91016.ttf",
+    "static/media/bog.png": "/bandana-dance/static/media/bog.f0dbb1740fa90b8aab50.png",
+    "static/media/RussoOne.ttf": "/bandana-dance/static/media/RussoOne.b2f5b287ccb8fd446eae.ttf",
+    "static/media/vk.svg": "/bandana-dance/static/media/vk.80049a0022fc049d60fa6581b83a8735.svg",
+    "static/media/bot.svg": "/bandana-dance/static/media/bot.9246240abfc83680c4c9c60aaaae195e.svg",
+    "static/media/tg.svg": "/bandana-dance/static/media/tg.f1d7a6350c5341f1cb34300aa081ffb9.svg",
+    "index.html": "/bandana-dance/index.html",
+    "static/media/next.svg": "/bandana-dance/static/media/next.7cc38a7bcee5be3fd489c0fd5c7a89d1.svg",
+    "static/media/back.svg": "/bandana-dance/static/media/back.bee0ee787cc8d7b20c30e5274c4fc109.svg",
+    "main.0ae7a75f.css.map": "/bandana-dance/static/css/main.0ae7a75f.css.map",
+    "main.21a753b3.js.map": "/bandana-dance/static/js/main.21a753b3.js.map"
   },
   "entrypoints": [
-    "static/css/main.fbc412d5.css",
-    "static/js/main.57f79dd4.js"
+    "static/css/main.0ae7a75f.css",
+    "static/js/main.21a753b3.js"
   ]
 }
