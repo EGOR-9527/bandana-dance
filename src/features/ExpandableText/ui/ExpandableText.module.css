@@ -1,0 +1,76 @@
+@font-face {
+  font-family: "Inter";
+  src: url("../../../shared/fonts/Inter.ttf");
+}
+
+.hidden {
+  display: flex;
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.visible {
+  transition: 1.5s;
+  opacity: 1;
+}
+
+.expandableText {
+  position: relative;
+  margin-top: 3vh;
+}
+
+.expandableText::before {
+  content: "";
+  position: absolute;
+  top: -0.7vw;
+  width: 43.75vw;
+  height: 0.10417vw;
+  background-color: #d9d9d9;
+}
+
+.expandableText p {
+  font-size: min(1.04167vw, 1.85185vh);
+  font-family: "Inter";
+  font-style: normal;
+  width: 44.66667vw;
+  font-weight: 400;
+  line-height: 150%;
+  margin-top: 1.85185vh;
+  color: #ffffff;
+}
+
+.highlight {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 900;
+  line-height: 150%;
+  color: #6366f1;
+}
+
+.accent {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 900;
+  line-height: 150%;
+  color: #c463f1;
+}
+
+@media (max-width: 1024px) {
+  .expandableText p {
+    font-size: min(2.59067vw, 2.15983vh);
+    font-family: "Inter";
+    font-style: normal;
+    width: 50.66667vw;
+    font-weight: 400;
+    line-height: 150%;
+    margin-top: 1.85185vh;
+    color: #ffffff;
+  }
+}
+
+@media (max-width: 600px) {
+  .expandableText p {
+    width: 60.66667vw;
+  }
+}

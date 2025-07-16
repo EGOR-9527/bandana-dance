@@ -1,0 +1,340 @@
+/* === Базовые стили (десктоп) === */
+.slider {
+  position: relative;
+  width: 50vw;
+  margin-top: 25vw;
+}
+
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 46.2963vh;
+  margin-top: 6.48148vh;
+  overflow: hidden;
+  transform: skewX(-8deg);
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.active {
+  opacity: 1;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+.slide img,
+.slide video {
+  width: 50vw;
+  height: 40vw;
+  object-fit: contain;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* === Кнопки === */
+.circle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2vw;
+  height: 2vw;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  transition: 0.5s;
+}
+
+.circle:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: skewX(8deg) scale(1.094);
+}
+
+.circle img {
+  width: 1.04167vw;
+  height: 1.04167vw;
+}
+
+.left {
+  transform: skewX(8deg);
+  margin-inline-end: 21vw;
+}
+
+.right {
+  transform: skewX(8deg);
+  margin-inline-start: 21vw;
+}
+
+/* === Индикаторы === */
+.indicator {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 0.41667vw;
+  margin-top: -1vw;
+  width: 100%;
+  padding: 0;
+  list-style: none;
+}
+
+.indicatorDot {
+  width: 1vw;
+  height: 0.625vw;
+  background: rgba(112, 112, 112, 0.8);
+  transform: skewX(-20deg);
+  cursor: pointer;
+  transition: all 0.4s;
+}
+
+.indicatorDot:hover,
+.indicatorDot:focus {
+  background-color: #555;
+  outline: none;
+}
+
+.activeDot {
+  width: 2vw;
+  background: #8b5cf6;
+  transform: skewX(-20deg) scale(1.09);
+}
+
+/* === Модальное окно === */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  padding: 1vw;
+  background: #000;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContent img,
+.modalContent video {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.modalClose {
+  position: absolute;
+  top: 1vw;
+  right: 2vw;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 2vw;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* === Адаптация под планшеты === */
+@media (max-width: 1024px) {
+  .slider {
+    width: 80vw;
+    margin-top: 50vw;
+  }
+
+  .slide img,
+  .slide video {
+    width: 80vw;
+    height: 60vw;
+  }
+
+  .circle {
+    position: absolute;
+    width: 4vw;
+    height: 4vw;
+  }
+
+  .circle img {
+    width: 2vw;
+    height: 2vw;
+  }
+
+  .left {
+    left: 3vw;
+  }
+
+  .right {
+    right: 3vw;
+  }
+
+  .indicatorDot {
+    width: 2vw;
+    height: 1vw;
+  }
+
+  .indicator {
+    margin-top: -3vw;
+    gap: 1vw;
+  }
+
+  .activeDot {
+    width: 4vw;
+  }
+
+  .modalClose {
+    font-size: 4vw;
+  }
+}
+
+/* === Адаптация под телефоны === */
+@media (max-width: 769px) {
+  .slider {
+    width: 90vw;
+    margin-top: 70vh;
+  }
+
+  .wrapper {
+    height: 40vh;
+    transform: skewX(-5deg);
+  }
+
+  .slide img,
+  .slide video {
+    width: 90vw;
+    height: 60vw;
+  }
+
+  .circle {
+    position: absolute;
+    width: 6vw;
+    height: 6vw;
+  }
+
+  .circle img {
+    width: 3vw;
+    height: 3vw;
+  }
+
+  .left {
+    left: 3vw;
+  }
+
+  .right {
+    right: 3vw;
+  }
+
+  .indicatorDot {
+    width: 4vw;
+    height: 1.4vw;
+  }
+
+  .activeDot {
+    width: 6vw;
+  }
+
+  .modalContent {
+    padding: 3vw;
+    max-width: 95vw;
+    max-height: 85vh;
+  }
+
+  .modalClose {
+    top: 2vw;
+    right: 3vw;
+    font-size: 6vw;
+  }
+
+  .indicator {
+    margin-top: -2vw;
+    gap: 3vw;
+  }
+}
+
+/* === Адаптация под экраны до 400px === */
+@media (max-width: 500px) {
+  .slider {
+    position: relative;
+    width: 96vw;
+    margin-top: 80vw;
+  }
+
+  .wrapper {
+    height: 50vw;
+    transform: skewX(-3deg);
+    margin-top: 4vh;
+  }
+
+  .slide img,
+  .slide video {
+    width: 88vw;
+    height: 64vw;
+  }
+
+  .circle {
+    width: 8vw;
+    height: 8vw;
+  }
+
+  .circle img {
+    width: 3vw;
+    height: 3vw;
+  }
+
+  .left {
+    left: 7vw;
+    margin-inline-end: 0;
+  }
+
+  .right {
+    right: 7vw;
+    margin-inline-start: 0;
+  }
+
+  .indicator {
+    gap: 4vw;
+    position: absolute;
+    bottom: 2vw;
+  }
+
+  .indicatorDot {
+    width: 5vw;
+    height: 2vw;
+  }
+
+  .activeDot {
+    width: 8vw;
+  }
+
+  .modalContent {
+    padding: 4vw;
+    max-width: 98vw;
+    max-height: 80vh;
+  }
+
+  .modalClose {
+    top: 3vw;
+    right: 4vw;
+    font-size: 8vw;
+  }
+}

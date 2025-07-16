@@ -1,0 +1,19 @@
+.contact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50vw;
+  margin-bottom: 10vw;
+}
+
+.buttons {
+  display: flex;
+  margin-top: 7.8125vw;
+}
+
+@media (max-width: 600px) {
+  .buttons {
+    flex-direction: column;
+  }
+}
