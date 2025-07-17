@@ -2,6 +2,12 @@ import axios from "axios";
 
 const baseURL = "https://cloud-api.yandex.net/v1/disk/public/resources";
 
+const DEFAULT_HEADERS = {
+  Referer: "https://bandana-dance.ru/", // замени на свой реферер, если нужно
+  "User-Agent":
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+};
+
 export const fetchFiles = async (publicKey) => {
   try {
     // Получаем список файлов из публичной папки
@@ -10,6 +16,7 @@ export const fetchFiles = async (publicKey) => {
         public_key: publicKey,
         path: "",
       },
+      headers: DEFAULT_HEADERS,
     });
 
     const items = res.data._embedded?.items || [];
@@ -24,10 +31,10 @@ export const fetchFiles = async (publicKey) => {
               public_key: publicKey,
               path: item.path,
             },
+            headers: DEFAULT_HEADERS,
           }
         );
 
-        // Возвращаем объект с ключами, включая строку download_url
         return {
           ...item,
           download_url: downloadRes.data.href,
@@ -47,18 +54,17 @@ export const fetchImg = async () => {
   const publicKey = "https://disk.yandex.ru/d/FPF_X0qkRTzKxA";
   const files = await fetchFiles(publicKey);
 
-  const urls = files
+  return files
     .filter((f) => f.mime_type?.startsWith("image/"))
     .map((file) => file.download_url);
-  return urls;
 };
 
 // Функция, возвращающая сразу только видео с download_url
 export const fetchVideo = async () => {
   const publicKey = "https://disk.yandex.ru/d/3NzyGruUbtNyiQ";
   const files = await fetchFiles(publicKey);
-  const urls = files
+
+  return files
     .filter((f) => f.mime_type?.startsWith("video/"))
     .map((file) => file.download_url);
-  return urls;
 };
