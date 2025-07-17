@@ -1,85 +1,64 @@
 import axios from "axios";
 
-// Папка с изображениями
-const IMG_PUBLIC_KEY = "https://disk.yandex.ru/d/FPF_X0qkRTzKxA";
-// Папка с видео
-const VIDEO_PUBLIC_KEY = "https://disk.yandex.ru/d/3NzyGruUbtNyiQ";
+const baseURL = "https://cloud-api.yandex.net/v1/disk/public/resources";
 
-// Загрузка изображений через превью
-export const fetchImg = async () => {
+export const fetchFiles = async (publicKey) => {
   try {
-    const response = await axios.get(
-      "https://cloud-api.yandex.net/v1/disk/public/resources",
-      {
-        params: {
-          public_key: IMG_PUBLIC_KEY,
-          path: "",
-          preview_size: "XL", // можно менять на S, M, L
-        },
-      }
+    // Получаем список файлов из публичной папки
+    const res = await axios.get(baseURL, {
+      params: {
+        public_key: publicKey,
+        path: "",
+      },
+    });
+
+    const items = res.data._embedded?.items || [];
+
+    // Запрашиваем ссылку на скачивание для каждого файла
+    const filesWithDownloadLinks = await Promise.all(
+      items.map(async (item) => {
+        const downloadRes = await axios.get(
+          "https://cloud-api.yandex.net/v1/disk/public/resources/download",
+          {
+            params: {
+              public_key: publicKey,
+              path: item.path,
+            },
+          }
+        );
+
+        // Возвращаем объект с ключами, включая строку download_url
+        return {
+          ...item,
+          download_url: downloadRes.data.href,
+        };
+      })
     );
 
-    const files = response.data._embedded?.items || [];
-
-    const imgs = files.filter(
-      (file) => file.mime_type && file.mime_type.startsWith("image/")
-    );
-
-    // Берем превьюшки (без 403)
-    const imageLinks = imgs.map((el) => el.preview);
-
-    return imageLinks;
-  } catch (err) {
-    console.error("Ошибка загрузки изображений:", err.message);
+    return filesWithDownloadLinks;
+  } catch (error) {
+    console.error("Error fetching files:", error);
     return [];
   }
 };
 
-// Загрузка видео через download API
+// Функция, возвращающая сразу только изображения с download_url
+export const fetchImg = async () => {
+  const publicKey = "https://disk.yandex.ru/d/FPF_X0qkRTzKxA";
+  const files = await fetchFiles(publicKey);
+
+  const urls = files
+    .filter((f) => f.mime_type?.startsWith("image/"))
+    .map((file) => file.download_url);
+  return urls;
+};
+
+// Функция, возвращающая сразу только видео с download_url
 export const fetchVideo = async () => {
-  try {
-    const response = await axios.get(
-      "https://cloud-api.yandex.net/v1/disk/public/resources",
-      {
-        params: {
-          public_key: VIDEO_PUBLIC_KEY,
-          path: "",
-        },
-      }
-    );
-
-    const files = response.data._embedded?.items || [];
-
-    const videos = files.filter(
-      (file) => file.mime_type && file.mime_type.startsWith("video/")
-    );
-
-    // Для каждого видео получаем рабочую download ссылку
-    const downloadLinks = await Promise.all(
-      videos.map(async (video) => {
-        try {
-          const downloadRes = await axios.get(
-            "https://cloud-api.yandex.net/v1/disk/public/resources/download",
-            {
-              params: {
-                public_key: VIDEO_PUBLIC_KEY,
-                path: video.path,
-              },
-            }
-          );
-
-          return downloadRes.data.href;
-        } catch (err) {
-          console.warn(`Не удалось получить видео "${video.name}":`, err.message);
-          return null;
-        }
-      })
-    );
-
-    // Отфильтровываем null
-    return downloadLinks.filter(Boolean);
-  } catch (err) {
-    console.error("Ошибка загрузки видео:", err.message);
-    return [];
-  }
+  const publicKey = "https://disk.yandex.ru/d/3NzyGruUbtNyiQ";
+  const files = await fetchFiles(publicKey);
+  const urls = files
+    .filter((f) => f.mime_type?.startsWith("video/"))
+    .map((file) => file.download_url);
+  return urls;
 };
