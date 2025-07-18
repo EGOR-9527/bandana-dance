@@ -4,4 +4,4 @@ import photo3 from "../media/img/photo_2025-07-18_16-17-19.jpg";
 import photo4 from "../media/img/photo_2025-07-18_16-17-23.jpg";
 import photo5 from "../media/img/photo_2025-07-18_16-19-02.jpg";
 
-export const PrintedText = [photo1, photo2, photo3, photo4, photo5];
+export const ImgPath = [photo1, photo2, photo3, photo4, photo5];
