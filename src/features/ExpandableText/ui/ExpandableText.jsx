@@ -3,7 +3,7 @@ import styles from "./ExpandableText.module.css";
 
 const ExpandableText = ({ open }) => {
   return (
-    <div style={{display: open ? "flex" : "none"}}
+    <div
       className={`${styles.expandableText} ${
         !open ? styles.hidden : styles.visible
       }`}

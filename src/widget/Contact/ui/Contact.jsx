@@ -15,7 +15,7 @@ const Contact = () => {
         <RollerogramButton
           onClick={() => window.open("https://t.me/dancerinbandana", "_blank")}
           className="telegram"
-          text="TELEGRAM CANAL"
+          text="TELEGRAM CHANNEL"
           svg={tg}
         />
         <RollerogramButton
