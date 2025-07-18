@@ -210,10 +210,11 @@
     align-items: center;
     justify-content: center;
     margin-top: 45vh;
+    max-width: 40vw;
   }
 
   .textBlock {
-    width: 75vw;
+    width: 72vw;
     min-height: 70vw;
     margin-left: -3vw;
     margin-top: 5vw;
@@ -223,7 +224,7 @@
   }
 
   .imageBlock {
-    width: 75vw;
+    width: 72vw;
   }
 
   .footer p {

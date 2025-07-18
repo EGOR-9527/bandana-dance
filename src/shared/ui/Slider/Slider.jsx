@@ -62,23 +62,20 @@ const Slider = ({ media, type, title }) => {
               />
             ) : (
               <video
-                src={item}
+                src={item.video}
                 controls={false}
                 onClick={() =>
-                  openModal(
-                    <video
-                      src={item}
-                      controls
-                      autoPlay
-                      style={{ maxWidth: "90vw", maxHeight: "90vh" }}
-                    />
-                  )
+                  openModal(<video src={item.video} controls autoPlay />)
                 }
                 style={{ cursor: "pointer" }}
               />
             )}
           </div>
         ))}
+
+        {type === "video" && media[index]?.name && (
+          <p className={style.nameVideo}>{media[index].name}</p>
+        )}
 
         <button
           onClick={nextHandle}

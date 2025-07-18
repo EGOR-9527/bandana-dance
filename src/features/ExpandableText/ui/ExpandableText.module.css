@@ -17,6 +17,7 @@
 
 .expandableText {
   position: relative;
+  flex-direction: column;
   margin-top: 3vh;
 }
 

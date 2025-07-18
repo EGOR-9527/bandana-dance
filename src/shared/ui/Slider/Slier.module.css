@@ -1,4 +1,9 @@
 /* === Базовые стили (десктоп) === */
+@font-face {
+  font-family: "Inter";
+  src: url("../../fonts/Inter.ttf");
+}
+
 .slider {
   position: relative;
   width: 50vw;
@@ -156,11 +161,35 @@
   z-index: 10;
 }
 
+.nameVideo {
+  color: #ffff;
+  font-family: "Inter";
+  font-size: min(1.5625vw, 2.77778vh);
+  transform: skewX(8deg);
+  font-weight: 800;
+  position: absolute;
+  bottom: 2vw;
+  left: 5vw;
+  z-index: 10;
+}
+
 /* === Адаптация под планшеты === */
 @media (max-width: 1024px) {
   .slider {
     width: 80vw;
     margin-top: 50vw;
+  }
+
+  .nameVideo {
+    color: #ffff;
+    font-family: "Inter";
+    font-size: min(3.125vw, 5.55556vh);
+    transform: skewX(8deg);
+    font-weight: 800;
+    position: absolute;
+    bottom: 3vw;
+    left: 5vw;
+    z-index: 10;
   }
 
   .slide img,
@@ -225,6 +254,18 @@
     height: 60vw;
   }
 
+  .nameVideo {
+    color: #ffff;
+    font-family: "Inter";
+    font-size: min(3.125vw, 5.55556vh);
+    transform: skewX(8deg);
+    font-weight: 800;
+    position: absolute;
+    bottom: 5vw;
+    left: 5vw;
+    z-index: 10;
+  }
+
   .circle {
     position: absolute;
     width: 6vw;
@@ -260,8 +301,8 @@
   }
 
   .modalClose {
-    top: 2vw;
-    right: 3vw;
+    top: 5vw;
+    right: 7vw;
     font-size: 6vw;
   }
 
@@ -306,6 +347,18 @@
     margin-inline-end: 0;
   }
 
+  .nameVideo {
+    color: #ffff;
+    font-family: "Inter";
+    font-size: min(3.125vw, 5.55556vh);
+    transform: skewX(8deg);
+    font-weight: 800;
+    position: absolute;
+    bottom: 2vw;
+    left: 10vw;
+    z-index: 10;
+  }
+
   .right {
     right: 7vw;
     margin-inline-start: 0;
@@ -333,8 +386,8 @@
   }
 
   .modalClose {
-    top: 3vw;
-    right: 4vw;
+    top: 6vw;
+    right: 8vw;
     font-size: 8vw;
   }
 }
