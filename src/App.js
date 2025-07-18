@@ -6,44 +6,21 @@ import Slider from "./shared/ui/Slider/Slider";
 import Contact from "./widget/Contact/ui/Contact";
 import "./App.css";
 
-import { fetchImg } from "./shared/api/fetchYandexDiskResources ";
-import { fetchVideo } from "./shared/api/fetchYandexDiskResources ";
+import { ImgPath } from "./entities/ImgPath";
+import { VideoPath } from "./entities/VideoPath";
 
 function App() {
-  const [imgPath, setImgPath] = useState([]);
-  const [videoPath, setVideoPath] = useState([]);
-
-  useEffect(() => {
-    // Загружаем изображения
-    fetchImg().then((images) => {
-      if (images) {
-        setImgPath(images);
-      }
-    });
-    // Загружаем видео
-    fetchVideo().then((videos) => {
-      if (videos) {
-        setVideoPath(videos);
-      }
-    });
-  }, []);
-
-  console.log("ImgPath: ", imgPath);
-  console.log("VideoPath: ", videoPath);
-
   return (
     <div className="app">
       <ParticleCanvas className="background" />
-
       <HeroSerction />
-
       <Biography />
 
-      {imgPath.length > 0 && (
-        <Slider media={imgPath} type="img" title="PERFORMANCES" />
+      {ImgPath.length > 0 && (
+        <Slider media={ImgPath} type="img" title="PERFORMANCES" />
       )}
-      {videoPath.length > 0 && (
-        <Slider media={videoPath} type="video" title="GALLERY" />
+      {VideoPath.length > 0 && (
+        <Slider media={VideoPath} type="video" title="GALLERY" />
       )}
 
       <Contact />
