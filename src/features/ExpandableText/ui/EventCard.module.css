@@ -1,0 +1,382 @@
+/* === Шрифты === */
+@font-face {
+  font-family: "Manrope";
+  src: url("../../../shared/fonts/Manrope.ttf");
+}
+
+@font-face {
+  font-family: "MarckScript";
+  src: url("../../../shared/fonts/MarckScript.ttf");
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../../../shared/fonts/Inter.ttf");
+}
+
+/* === Карточка === */
+.card {
+  position: relative;
+  width: 26.04167vw;
+  height: 18.22917vw;
+  perspective: 52.08333vw;
+  transform: skewX(-8deg);
+  cursor: pointer;
+  transition: all 1s;
+}
+
+.card:hover {
+  color: #fff;
+  transform: scale(1.1) skewX(-8deg);
+}
+
+.xplanation {
+  color: #fff; /* например, базовый цвет */
+  transition: color 0.3s ease;
+}
+
+.card:hover .xplanation {
+  color: #FFFF; /* полупрозрачный белый при ховере */
+}
+
+/* === Общие стили лиц карточки === */
+.front,
+.back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  box-sizing: border-box;
+  backface-visibility: hidden;
+  transition: transform 0.6s ease;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  background: rgba(28, 31, 40, 0.15);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  padding: 0.52083vw;
+  backdrop-filter: blur(4px);
+
+  border: 0.26042vw solid transparent;
+  border-image: linear-gradient(90deg, #6565ef 0%, #e7499c 151.38%);
+  border-image-slice: 1;
+
+  /* Отменено: не применяем наклон к содержимому */
+  /* transform: skewX(8deg); */
+}
+
+/* === Сторона "лицевая" === */
+.front {
+  transform: rotateY(0deg);
+  align-items: center;
+  text-align: center;
+  justify-content: flex-start;
+}
+
+/* === Сторона "оборотная" === */
+.back {
+  transform: rotateY(180deg);
+  overflow-y: auto;
+  color: #8b5cf6;
+  font-size: min(0.72917vw, 1.2963vh);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* === Переворот карточки === */
+.flipped .front {
+  transform: rotateY(-180deg);
+}
+
+.flipped .back {
+  transform: rotateY(0deg);
+  position: relative;
+}
+
+/* === Обёртка изображения === */
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 15vw;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  pointer-events: none;
+  display: block;
+}
+
+.imageWrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 0) 60%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+}
+
+/* === Название события === */
+.name {
+  position: absolute;
+  bottom: 3vw;
+  font-weight: 800;
+  font-size: min(2.08333vw, 3.7037vh);
+  color: #e7499c;
+  user-select: none;
+  font-family: "MarckScript";
+}
+
+.Funky {
+  position: absolute;
+  bottom: 3vw;
+  font-weight: 800;
+  font-size: min(3.38542vw, 6.01852vh);
+  color: #8b5cf6;
+  user-select: none;
+  font-family: "MarckScript";
+}
+
+/* === Описание === */
+.description {
+  color: #ffff;
+  font-weight: 700;
+  line-height: 1.4;
+  font-family: "Inter";
+  font-size: min(0.98958vw, 1.75926vh);
+  margin-top: 0.1vw;
+  margin-left: 0.1vw;
+  width: 95%;
+  transform: skewX(8deg);
+}
+
+/* === Подсказка на фронте === */
+.xplanation {
+  color: #252e49;
+  font-family: "Manrope";
+  font-size: min(0.78125vw, 1.38889vh);
+  margin-top: 1vw;
+}
+
+/* === Информация: дата, время, место === */
+.date,
+.time,
+.place {
+  display: flex;
+  color: #ffff;
+  margin-top: 1vw;
+  font-size: min(0.88542vw, 1.57407vh);
+}
+
+.text {
+  margin-left: 0.6vw;
+  font-weight: 700;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  font-size: min(0.9375vw, 1.66667vh);
+  font-family: "Manrope";
+}
+
+/* === Иконка (возможно рядом с датой/временем) === */
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2vw;
+  width: 1.6vw;
+  height: 1.6vw;
+}
+
+/* === Элементы внутри .back, подчёркнутые bold === */
+.back * b {
+  width: 10vw;
+  height: 10vw;
+  background-color: #e7499c;
+  border-radius: 5vw;
+}
+
+/* === Прочее (дополнительный блок?) === */
+.other {
+  margin-top: 2vw;
+  margin-left: 1vw;
+  display: flex;
+  flex-direction: column;
+
+  /* Только если нужно компенсировать наклон .card */
+  transform: skewX(8deg);
+}
+
+@media (max-width: 1440px) {
+  .description {
+    font-size: min(0.88542vw, 1.57407vh);
+  }
+
+  .card {
+    width: 30vw;
+    height: 20vw;
+  }
+
+  .name {
+    bottom: 5vw;
+    font-size: min(2.60417vw, 4.62963vh);
+    width: 80%;
+    color: #fff;
+  }
+
+  .Funky {
+    position: absolute;
+    bottom: 5vw;
+    font-weight: 800;
+    font-size: min(3.38542vw, 6.01852vh);
+    color: #8b5cf6;
+    user-select: none;
+    font-family: "MarckScript";
+  }
+
+  .xplanation {
+    color: #252e49;
+    font-family: "Manrope";
+    font-size: min(1.5625vw, 2.77778vh);
+    margin-top: 1vw;
+  }
+}
+
+@media (max-width: 1024px) {
+  .description {
+    font-size: min(0.98958vw, 1.75926vh);
+  }
+
+  .card {
+    width: 30vw;
+    height: 25vw;
+  }
+
+  .icon {
+    width: 3vw;
+    height: 3vw;
+    font-size: min(1.30208vw, 2.31481vh);
+  }
+
+  .text {
+    font-size: min(1.04167vw, 1.85185vh);
+  }
+
+  .imageWrapper {
+    position: relative;
+    width: 100%;
+    height: 20vw;
+    overflow: hidden;
+  }
+
+  .name {
+    bottom: 6vw;
+  }
+
+  .Funky {
+    position: absolute;
+    bottom: 6vw;
+    font-weight: 800;
+    font-size: min(3.64583vw, 6.48148vh);
+    color: #8b5cf6;
+    user-select: none;
+    font-family: "MarckScript";
+  }
+}
+
+@media (max-width: 600px) {
+  .description {
+    font-size: min(1.77083vw, 3.14815vh);
+    margin-left: 1vw;
+  }
+
+  .card {
+    width: 30vw;
+    height: 25vw;
+    margin-top: 6vw;
+  }
+
+  .icon {
+    width: 5vw;
+    height: 5vw;
+    border-radius: 100%;
+    font-size: min(2.08333vw, 3.7037vh);
+  }
+
+  .other {
+    margin-left: 3vw;
+  }
+
+  .text {
+    font-size: min(2.08333vw, 3.7037vh);
+    margin-left: 2vw;
+  }
+
+  .imageWrapper {
+    position: relative;
+    width: 100%;
+    height: 33vw;
+    overflow: hidden;
+  }
+
+  .card {
+    position: relative;
+    width: 60vw;
+    height: 40vw;
+    perspective: 52.08333vw;
+    transform: skewX(-8deg);
+    cursor: pointer;
+  }
+
+  .xplanation {
+    color: #252e49;
+    font-family: "Manrope";
+    font-size: min(2.08333vw, 3.7037vh);
+    margin-top: 1vw;
+  }
+
+  .name {
+    position: absolute;
+    bottom: 8vw;
+    font-weight: 700;
+    font-size: min(5.72917vw, 10.18519vh);
+    color: #fff;
+    user-select: none;
+    font-family: "MarckScript";
+  }
+
+  .Funky {
+    position: absolute;
+    bottom: 8vw;
+    font-weight: 800;
+    font-size: min(7.29167vw, 12.96296vh);
+    color: #8b5cf6;
+    user-select: none;
+    font-family: "MarckScript";
+  }
+
+  .date,
+  .time,
+  .place {
+    display: flex;
+    color: #fff;
+    margin-top: 3vw;
+    font-size: min(0.88542vw, 1.57407vh);
+  }
+}

@@ -3,6 +3,7 @@ import { ParticleCanvas } from "./shared/ui/Canvas/ParticleCanvas";
 import HeroSerction from "./widget/HeroSection/ui/HeroSerction";
 import Biography from "./widget/Biography/ui/Biography";
 import Slider from "./shared/ui/Slider/Slider";
+import EventsSection from "./widget/Events/EventsSection.jsx";
 import Contact from "./widget/Contact/ui/Contact";
 import "./App.css";
 
@@ -14,13 +15,17 @@ function App() {
     <div className="app">
       <ParticleCanvas className="background" />
       <HeroSerction />
+
+      <EventsSection />
+
       <Biography />
 
       {ImgPath.length > 0 && (
-        <Slider media={ImgPath} type="img" title="PERFORMANCES" />
+        <Slider media={ImgPath} type="img" title="GALLERY" />
       )}
+
       {VideoPath.length > 0 && (
-        <Slider media={VideoPath} type="video" title="GALLERY" />
+        <Slider media={VideoPath} type="video" title="PERFORMANCES" />
       )}
 
       <Contact />
