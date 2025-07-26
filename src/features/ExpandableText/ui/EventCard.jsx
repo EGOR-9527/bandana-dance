@@ -13,9 +13,7 @@ const EventCard = ({ event }) => {
         <div className={style.imageWrapper}>
           <img src={event.img} alt={event.name} className={style.image} />
         </div>
-        {event.name === "Funky Camp'25" ? (
-          <h3 className={style.Funky}>{event.name}</h3>
-        ) : (
+        {event.name === "New Solo" ? null : (
           <h3 className={style.name}>{event.name}</h3>
         )}
         <p className={style.xplanation}>нажмите чтобы перевернуть</p>

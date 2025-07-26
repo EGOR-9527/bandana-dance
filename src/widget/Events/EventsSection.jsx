@@ -18,7 +18,6 @@ const EventsSection = () => {
         ))}
 
         <EmptyEvent />
-        <EmptyEvent />
       </div>
     </div>
   );
