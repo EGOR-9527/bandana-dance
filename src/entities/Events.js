@@ -1,5 +1,5 @@
 import photo1 from "../media/img/events/photo_2025-07-23_19-34-39.jpg";
-import photo2 from "../media/img/events/photo_2025-07-27_00-04-49.jpg";
+import photo2 from "../media/img/events/photo_2025-07-26_23-48-41.jpg";
 
 export const Events = [
   {
