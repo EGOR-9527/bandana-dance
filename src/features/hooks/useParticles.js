@@ -21,8 +21,8 @@ export function useParticles(canvasRef) {
     rotation: Math.random() * Math.PI * 2,
     alpha: 1,
     life: Math.random() * 5000,
-    vx: Math.random() * 10 - 5,
-    vy: Math.random() * 10 - 5,
+    vx: Math.random() * 2 - 1,
+    vy: Math.random() * 2 - 1,
   });
 
   // resize handler
