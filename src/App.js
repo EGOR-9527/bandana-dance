@@ -6,6 +6,7 @@ import Slider from "./shared/ui/Slider/Slider";
 import EventsSection from "./widget/Events/EventsSection.jsx";
 import Contact from "./widget/Contact/ui/Contact";
 import "./App.css";
+import ModelWindowProject from "./features/ExpandableText/ui/ModelWindowProject.jsx";
 
 import { ImgPath } from "./entities/ImgPath";
 import { VideoPath } from "./entities/VideoPath";
@@ -14,6 +15,9 @@ function App() {
   return (
     <div className="app">
       <ParticleCanvas className="background" />
+
+      <ModelWindowProject />
+
       <HeroSerction />
 
       <EventsSection />
