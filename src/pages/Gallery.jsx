@@ -6,7 +6,7 @@ const Gallery = () => {
   return (
     <div>
       <ParticleCanvas className="background" />
-      <Header text="Главная строница" link="/" />
+      <Header text="Главная страница" link="/" />
       <FilteredPhotos />
     </div>
   );
