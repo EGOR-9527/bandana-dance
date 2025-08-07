@@ -7,7 +7,7 @@ import Biography from "../widget/Biography/ui/Biography.jsx";
 import Slider from "../shared/ui/Slider/Slider.jsx";
 import Contact from "../widget/Contact/ui/Contact.jsx";
 import ImgPath from "../entities/ImgPath.js";
-import VideoPath from "../entities/VideoPath.js";
+import { VideoPath } from "../entities/VideoPath.js";
 import Header from "../widget/Header/ui/Header.jsx";
 
 const Home = () => {
