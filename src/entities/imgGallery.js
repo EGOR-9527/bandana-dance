@@ -30,7 +30,7 @@ export const imgGallery = [
   { filter: "Чемпионаты", photo: photo9 },
   { filter: "Чемпионаты", photo: photo10 },
   { filter: "Чемпионаты", photo: photo11 },
-  { filter: "Сбороы", photo: photo12 },
+  { filter: "Сборы", photo: photo12 },
   { filter: "Концерты", photo: photo13 },
   { filter: "Чемпионаты", photo: photo14 },
   { filter: "Концерты", photo: photo15 },

@@ -3,7 +3,7 @@ import style from "./FilteredPhotos.module.css";
 import { imgGallery } from "../../../entities/imgGallery";
 import CustomSelect from "./CustomSelect";
 
-const categories = ["Все", "Чемпионаты", "Концерты", "Сбороы"];
+const categories = ["Все", "Чемпионаты", "Концерты", "Сборы"];
 
 const FilteredPhotos = () => {
   const [filter, setFilter] = useState("Все");
