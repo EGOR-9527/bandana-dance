@@ -19,9 +19,9 @@ const Home = () => {
 
       <ModelWindowProject />
 
-      <EventsSection/>
-
       <HeroSerction />
+
+      <EventsSection/>
 
       <Biography />
 

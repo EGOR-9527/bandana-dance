@@ -1,5 +1,5 @@
 import photo1 from "../media/img/events/photo_2025-07-23_19-34-39.jpg";
-import photo2 from "../media/img/events/photo_2025-07-26_23-48-41.jpg";
+//import photo2 from "../media/img/events/photo_2025-07-26_23-48-41.jpg";
 import photo3 from "../media/img/events/photo_2025-08-11_18-05-37.jpg";
 
 export const Events = [
@@ -10,13 +10,13 @@ export const Events = [
     place: `Берег озера "Волго"`,
     date: `14-21августа 2025`,
   },
-  {
-    name: `New Solo`,
-    img: photo2,
-    description: `На ваши экраны выходит новый соло-номер! Он обещает быть в разы лучше своих предшественников, но все также интересным своей историей)`,
-    place: `?`,
-    date: `?`,
-  },
+ //{
+ //  name: `New Solo`,
+ //  img: photo2,
+ //  description: `На ваши экраны выходит новый соло-номер! Он обещает быть в разы лучше своих предшественников, но все также интересным своей историей)`,
+ //  place: `?`,
+ //  date: `?`,
+ //},
   {
     name: `Отчётный концерт ВотТакМогу + битва диджеев`,
     img: photo3,
