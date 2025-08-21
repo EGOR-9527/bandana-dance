@@ -17,6 +17,9 @@ import photo16 from "../media/img/gallery/photo_2025-08-07_13-24-02.jpg";
 import photo17 from "../media/img/gallery/photo_2025-08-07_13-24-05.jpg";
 import photo18 from "../media/img/gallery/photo_2025-08-07_13-24-08.jpg";
 import photo19 from "../media/img/gallery/photo_2025-08-07_13-24-11.jpg";
+import photo20 from "../media/img/gallery/photo_2025-08-21_17-07-00.jpg";
+import photo21 from "../media/img/gallery/photo_2025-08-21_17-07-08.jpg";
+import photo22 from "../media/img/gallery/photo_2025-08-21_17-07-11.jpg";
 
 export const imgGallery = [
   { filter: "Чемпионаты", photo: photo1 },
@@ -38,4 +41,7 @@ export const imgGallery = [
   { filter: "Концерты", photo: photo17 },
   { filter: "Чемпионаты", photo: photo18 },
   { filter: "Чемпионаты", photo: photo19 },
+  { filter: "Сборы", photo: photo20 },
+  { filter: "Сборы", photo: photo21 },
+  { filter: "Сборы", photo: photo22 },
 ];
