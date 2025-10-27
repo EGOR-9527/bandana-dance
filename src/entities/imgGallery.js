@@ -20,6 +20,8 @@ import photo19 from "../media/img/gallery/photo_2025-08-07_13-24-11.jpg";
 import photo20 from "../media/img/gallery/photo_2025-08-21_17-07-00.jpg";
 import photo21 from "../media/img/gallery/photo_2025-08-21_17-07-08.jpg";
 import photo22 from "../media/img/gallery/photo_2025-08-21_17-07-11.jpg";
+import photo23 from "../media/img/gallery/photo_2025-10-27_16-58-29.jpg";
+import photo24 from "../media/img/gallery/photo_2025-10-27_16-58-35.jpg";
 
 export const imgGallery = [
   { filter: "Чемпионаты", photo: photo1 },
@@ -44,4 +46,6 @@ export const imgGallery = [
   { filter: "Сборы", photo: photo20 },
   { filter: "Сборы", photo: photo21 },
   { filter: "Сборы", photo: photo22 },
+  { filter: "Чемпионаты", photo: photo23 },
+  { filter: "Чемпионаты", photo: photo24 },
 ];
