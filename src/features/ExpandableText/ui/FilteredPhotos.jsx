@@ -31,7 +31,7 @@ const FilteredPhotos = () => {
             src={img.photo}
             alt={img.filter}
             className={style.photo}
-            onClick={() => setSelectedImage({ src: img.photo, index })}
+            onClick={() => setSelectedImage(img.photo)}
           />
         ))}
       </div>
@@ -45,7 +45,11 @@ const FilteredPhotos = () => {
             className={style.modalContent}
             onClick={(e) => e.stopPropagation()}
           >
-            <img src={selectedImage.src} alt="Modal" className={style.modalImage} />
+            <img
+              src={selectedImage.src}
+              alt="Modal"
+              className={style.modalImage}
+            />
             <button
               className={style.closeButton}
               onClick={() => setSelectedImage(null)}
@@ -54,7 +58,7 @@ const FilteredPhotos = () => {
             </button>
           </div>
           <footer className={style.footer_window_photo}>
-            {imgGallery[selectedImage.index].footer}
+            {selectedImage.footer}
           </footer>
         </div>
       )}
