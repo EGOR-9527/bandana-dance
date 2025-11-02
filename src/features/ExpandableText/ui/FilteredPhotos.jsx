@@ -17,7 +17,11 @@ const FilteredPhotos = () => {
   return (
     <section className={style.photo_section}>
       <div className={style.selectWrapper}>
-        <CustomSelect options={categories} value={filter} onChange={setFilter} />
+        <CustomSelect
+          options={categories}
+          value={filter}
+          onChange={setFilter}
+        />
       </div>
 
       <div className={style.gallery}>
@@ -27,17 +31,31 @@ const FilteredPhotos = () => {
             src={img.photo}
             alt={img.filter}
             className={style.photo}
-            onClick={() => setSelectedImage(img.photo)}
+            onClick={() => setSelectedImage({ src: img.photo, index })}
           />
         ))}
       </div>
 
       {selectedImage && (
-        <div className={style.modalOverlay} onClick={() => setSelectedImage(null)}>
-          <div className={style.modalContent} onClick={(e) => e.stopPropagation()}>
-            <img src={selectedImage} alt="Modal" className={style.modalImage} />
-            <button className={style.closeButton} onClick={() => setSelectedImage(null)}>×</button>
+        <div
+          className={style.modalOverlay}
+          onClick={() => setSelectedImage(null)}
+        >
+          <div
+            className={style.modalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img src={selectedImage.src} alt="Modal" className={style.modalImage} />
+            <button
+              className={style.closeButton}
+              onClick={() => setSelectedImage(null)}
+            >
+              ×
+            </button>
           </div>
+          <footer className={style.footer_window_photo}>
+            {imgGallery[selectedImage.index].footer}
+          </footer>
         </div>
       )}
     </section>

@@ -1,5 +1,6 @@
 import video1 from "../media/video/FUNKY_KIDS_✪_JUNIORS_PRO_CREW_✪_RDC22_Project818_Russian_Dance_Festival.mp4";
 import video2 from "../media/video/video_2025-07-18_16-19-15.mp4"
 import video3 from "../media/video/funKy kiDs.mp4"
+import video4 from "../media/video/6833768368849.mp4"
 
-export const VideoPath = [{ name: "PROJECT818 2022", video: video1 }, { name: "PROJECT818 2023", video: video2 }, {name: "STATUS 69 2025", video: video3}];
+export const VideoPath = [{ name: "PROJECT818 2022", video: video1 }, { name: "PROJECT818 2023", video: video2 }, {name: "STATUS 69 2025", video: video3}, {name: `Move Forward "New Generation" 2024`, video: video4}];
