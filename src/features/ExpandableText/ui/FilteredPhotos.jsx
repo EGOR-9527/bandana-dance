@@ -31,7 +31,7 @@ const FilteredPhotos = () => {
             src={img.photo}
             alt={img.filter}
             className={style.photo}
-            onClick={() => setSelectedImage(img.photo)}
+            onClick={() => setSelectedImage({ src: img.photo, footer: img.footer })}
           />
         ))}
       </div>
