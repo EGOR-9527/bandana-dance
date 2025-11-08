@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "./ScrollProgress.module.css";
 
 const ScrollProgress = () => {
-  const [scrollPercent, setScrollPercent] = useState(0);
+  const [scrollPercent, setScrollPercent] = useState(2);
   const isDragging = useRef(false);
 
   useEffect(() => {
