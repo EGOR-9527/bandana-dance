@@ -22,6 +22,9 @@ import photo21 from "../media/img/gallery/photo_2025-08-21_17-07-08.jpg";
 import photo22 from "../media/img/gallery/photo_2025-08-21_17-07-11.jpg";
 import photo23 from "../media/img/gallery/photo_2025-10-27_16-58-29.jpg";
 import photo24 from "../media/img/gallery/photo_2025-10-27_16-58-35.jpg";
+import photo25 from "../media/img/gallery/photo_2025-11-08_22-50-31.jpg";
+import photo26 from "../media/img/gallery/photo_2025-11-08_22-51-38.jpg";
+import photo27 from "../media/img/gallery/photo_2025-11-08_22-52-32.jpg";
 
 export const imgGallery = [
   {
@@ -140,4 +143,20 @@ export const imgGallery = [
     photo: photo24,
     footer: `ВотТакМогу; Волоколамск; STARTEEN; 2025г.`,
   },
+  {
+    filter: "Чемпионаты",
+    photo: photo25,
+    footer: `ВотТакМогу; Волоколамск; Молодежная Волна; 2025г.`,
+  },
+  {
+    filter: "Чемпионаты",
+    photo: photo26,
+    footer: `ВотТакМогу; Волоколамск; STARTEEN; 2024г.`,
+  },
+  {
+    filter: "Чемпионаты",
+    photo: photo27,
+    footer: `ВотТакМогу; Волоколамск; STARTEEN; 2024г.`,
+  },
 ];
+

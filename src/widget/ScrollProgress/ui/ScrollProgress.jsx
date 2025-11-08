@@ -2,61 +2,81 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "./ScrollProgress.module.css";
 
 const ScrollProgress = () => {
-  const [scrollPercent, setScrollPercent] = useState(2);
+  const [scrollPercent, setScrollPercent] = useState(0);
   const isDragging = useRef(false);
   const targetScroll = useRef(0);
-  const currentScroll = useRef(window.scrollY);
+  const isAnimating = useRef(false);
+  const animationFrame = useRef(null);
+
+  // Вычисляем процент скролла
+  const getScrollPercent = () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight;
+    const winHeight = window.innerHeight;
+    const totalScrollable = docHeight - winHeight;
+    return Math.min(Math.max((scrollTop / totalScrollable) * 100, 0), 100);
+  };
+
+  // Плавная анимация скролла
+  const animateScroll = () => {
+    const diff = targetScroll.current - window.scrollY;
+    if (Math.abs(diff) < 0.5) {
+      window.scrollTo(0, targetScroll.current);
+      isAnimating.current = false;
+      cancelAnimationFrame(animationFrame.current);
+      animationFrame.current = null;
+      return;
+    }
+    window.scrollTo(0, window.scrollY + diff * 0.15);
+    animationFrame.current = requestAnimationFrame(animateScroll);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight;
-      const winHeight = window.innerHeight;
-      const totalScrollable = docHeight - winHeight;
-
-      const scrolled = (scrollTop / totalScrollable) * 100;
-      setScrollPercent(Math.ceil(Math.min(Math.max(scrolled, 0), 100)));
+      if (!isDragging.current) {
+        setScrollPercent(getScrollPercent());
+      }
     };
 
-    const handleMove = (clientY) => {
+    const handlePointerMove = (clientY) => {
+      if (!isDragging.current) return;
       const winHeight = window.innerHeight;
       const docHeight = document.documentElement.scrollHeight;
       const totalScrollable = docHeight - winHeight;
 
-      const percent = (clientY / winHeight) * 100;
+      const percent = Math.min(Math.max((clientY / winHeight) * 100, 0), 100);
       targetScroll.current = (totalScrollable * percent) / 100;
+      setScrollPercent(percent);
+
+      if (!isAnimating.current) {
+        isAnimating.current = true;
+        animationFrame.current = requestAnimationFrame(animateScroll);
+      }
     };
 
-    const handleMouseMove = (e) => {
-      if (!isDragging.current) return;
-      handleMove(e.clientY);
-    };
-
-    const handleTouchMove = (e) => {
-      if (!isDragging.current) return;
-      handleMove(e.touches[0].clientY);
-    };
+    const handleMouseMove = (e) => handlePointerMove(e.clientY);
+    const handleTouchMove = (e) => handlePointerMove(e.touches[0].clientY);
 
     const stopDragging = () => {
       isDragging.current = false;
       document.body.style.userSelect = "auto";
     };
 
-    // === Анимация плавного догоняния ===
-    const animateScroll = () => {
-      if(!isDragging.current) return
-      currentScroll.current +=
-        (targetScroll.current - currentScroll.current) * 0.2;
-      window.scrollTo(0, currentScroll.current);
-      requestAnimationFrame(animateScroll);
+    const handleWheel = () => {
+      // Если пользователь прокручивает колесиком, отменяем анимацию
+      if (isAnimating.current) {
+        isAnimating.current = false;
+        if (animationFrame.current) cancelAnimationFrame(animationFrame.current);
+        animationFrame.current = null;
+      }
     };
-    animateScroll();
 
     window.addEventListener("scroll", handleScroll);
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", stopDragging);
-    window.addEventListener("touchmove", handleTouchMove);
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
     window.addEventListener("touchend", stopDragging);
+    window.addEventListener("wheel", handleWheel, { passive: true });
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -64,10 +84,12 @@ const ScrollProgress = () => {
       window.removeEventListener("mouseup", stopDragging);
       window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("touchend", stopDragging);
+      window.removeEventListener("wheel", handleWheel);
     };
   }, []);
 
-  const startDragging = () => {
+  const startDragging = (e) => {
+    e.preventDefault();
     isDragging.current = true;
     document.body.style.userSelect = "none";
   };
@@ -80,10 +102,10 @@ const ScrollProgress = () => {
         className={styles.thumb}
         style={{
           top: `${scrollPercent}%`,
-          transition: isDragging.current ? "none" : "top 0.1s linear",
+          transition: isDragging.current ? "none" : "top 0.15s ease-out",
         }}
       >
-        <span className={styles.percent}>{scrollPercent}%</span>
+        <span className={styles.percent}>{Math.round(scrollPercent)}%</span>
       </div>
     </aside>
   );
