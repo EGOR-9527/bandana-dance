@@ -4,11 +4,10 @@ import styles from "./ScrollProgress.module.css";
 const ScrollProgress = () => {
   const [scrollPercent, setScrollPercent] = useState(2);
   const isDragging = useRef(false);
-  const targetScroll = useRef(0);
-  const currentScroll = useRef(window.scrollY);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const updateScrollPercent = () => {
+      if (isDragging.current) return; // не мешаем скроллу при drag
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight;
       const winHeight = window.innerHeight;
@@ -24,7 +23,8 @@ const ScrollProgress = () => {
       const totalScrollable = docHeight - winHeight;
 
       const percent = (clientY / winHeight) * 100;
-      targetScroll.current = (totalScrollable * percent) / 100;
+      const scrollTo = (totalScrollable * percent) / 100;
+      window.scrollTo({ top: scrollTo, behavior: "auto" });
     };
 
     const handleMouseMove = (e) => {
@@ -42,30 +42,22 @@ const ScrollProgress = () => {
       document.body.style.userSelect = "auto";
     };
 
-    const animateScroll = () => {
-      currentScroll.current +=
-        (targetScroll.current - currentScroll.current) * 0.2;
-      window.scrollTo(0, currentScroll.current);
-      requestAnimationFrame(animateScroll);
-    };
-    animateScroll();
-
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", updateScrollPercent);
     window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", stopDragging);
     window.addEventListener("touchmove", handleTouchMove);
+    window.addEventListener("mouseup", stopDragging);
     window.addEventListener("touchend", stopDragging);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", updateScrollPercent);
       window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", stopDragging);
       window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("mouseup", stopDragging);
       window.removeEventListener("touchend", stopDragging);
     };
   }, []);
 
-  const startDragging = () => {
+  const handleStartDrag = () => {
     isDragging.current = true;
     document.body.style.userSelect = "none";
   };
@@ -73,8 +65,8 @@ const ScrollProgress = () => {
   return (
     <aside className={styles.scrollBar}>
       <div
-        onMouseDown={startDragging}
-        onTouchStart={startDragging}
+        onMouseDown={handleStartDrag}
+        onTouchStart={handleStartDrag}
         className={styles.thumb}
         style={{
           top: `${scrollPercent}%`,
