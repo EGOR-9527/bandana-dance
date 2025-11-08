@@ -4,6 +4,8 @@ import styles from "./ScrollProgress.module.css";
 const ScrollProgress = () => {
   const [scrollPercent, setScrollPercent] = useState(2);
   const isDragging = useRef(false);
+  const targetScroll = useRef(0);
+  const currentScroll = useRef(window.scrollY);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,8 +24,7 @@ const ScrollProgress = () => {
       const totalScrollable = docHeight - winHeight;
 
       const percent = (clientY / winHeight) * 100;
-      const scrollTo = (totalScrollable * percent) / 100;
-      window.scrollTo({ top: scrollTo, behavior: "auto" });
+      targetScroll.current = (totalScrollable * percent) / 100;
     };
 
     const handleMouseMove = (e) => {
@@ -40,6 +41,14 @@ const ScrollProgress = () => {
       isDragging.current = false;
       document.body.style.userSelect = "auto";
     };
+
+    const animateScroll = () => {
+      currentScroll.current +=
+        (targetScroll.current - currentScroll.current) * 0.2;
+      window.scrollTo(0, currentScroll.current);
+      requestAnimationFrame(animateScroll);
+    };
+    animateScroll();
 
     window.addEventListener("scroll", handleScroll);
     window.addEventListener("mousemove", handleMouseMove);
@@ -66,7 +75,7 @@ const ScrollProgress = () => {
       <div
         onMouseDown={startDragging}
         onTouchStart={startDragging}
-        className={`${styles.thumb} ${isDragging.current ? styles.dragging : ""}`}
+        className={styles.thumb}
         style={{
           top: `${scrollPercent}%`,
           transition: isDragging.current ? "none" : "top 0.1s linear",
