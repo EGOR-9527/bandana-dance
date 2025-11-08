@@ -44,6 +44,7 @@ const ScrollProgress = () => {
 
     // === Анимация плавного догоняния ===
     const animateScroll = () => {
+      if(!isDragging.current) return
       currentScroll.current +=
         (targetScroll.current - currentScroll.current) * 0.2;
       window.scrollTo(0, currentScroll.current);
