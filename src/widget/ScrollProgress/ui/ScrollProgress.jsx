@@ -7,8 +7,9 @@ const ScrollProgress = () => {
   const targetScroll = useRef(0);
   const isAnimating = useRef(false);
   const animationFrame = useRef(null);
+  const barRef = useRef(null); // ✅ ограничим touch-события только в зоне ползунка
 
-  // Вычисляем процент скролла
+  // Вычисляем процент прокрутки
   const getScrollPercent = () => {
     const scrollTop = window.scrollY;
     const docHeight = document.documentElement.scrollHeight;
@@ -33,9 +34,7 @@ const ScrollProgress = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!isDragging.current) {
-        setScrollPercent(getScrollPercent());
-      }
+      if (!isDragging.current) setScrollPercent(getScrollPercent());
     };
 
     const handlePointerMove = (clientY) => {
@@ -55,36 +54,60 @@ const ScrollProgress = () => {
     };
 
     const handleMouseMove = (e) => handlePointerMove(e.clientY);
-    const handleTouchMove = (e) => handlePointerMove(e.touches[0].clientY);
+
+    // ✅ блокируем дефолтный скролл только когда реально тащим ползунок
+    const handleTouchMove = (e) => {
+      if (!isDragging.current) return;
+      e.preventDefault();
+      handlePointerMove(e.touches[0].clientY);
+    };
 
     const stopDragging = () => {
+      if (!isDragging.current) return;
       isDragging.current = false;
+      isAnimating.current = false;
       document.body.style.userSelect = "auto";
+
+      if (animationFrame.current) {
+        cancelAnimationFrame(animationFrame.current);
+        animationFrame.current = null;
+      }
+
+      setScrollPercent(getScrollPercent());
     };
 
     const handleWheel = () => {
-      // Если пользователь прокручивает колесиком, отменяем анимацию
       if (isAnimating.current) {
         isAnimating.current = false;
-        if (animationFrame.current) cancelAnimationFrame(animationFrame.current);
-        animationFrame.current = null;
+        if (animationFrame.current) {
+          cancelAnimationFrame(animationFrame.current);
+          animationFrame.current = null;
+        }
       }
     };
 
+    // ✅ слушаем scroll глобально
     window.addEventListener("scroll", handleScroll);
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", stopDragging);
-    window.addEventListener("touchmove", handleTouchMove, { passive: false });
-    window.addEventListener("touchend", stopDragging);
     window.addEventListener("wheel", handleWheel, { passive: true });
+
+    // ✅ слушаем touch только на полосе прокрутки
+    const bar = barRef.current;
+    if (bar) {
+      bar.addEventListener("touchmove", handleTouchMove, { passive: false });
+      bar.addEventListener("touchend", stopDragging);
+    }
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", stopDragging);
-      window.removeEventListener("touchmove", handleTouchMove);
-      window.removeEventListener("touchend", stopDragging);
       window.removeEventListener("wheel", handleWheel);
+      if (bar) {
+        bar.removeEventListener("touchmove", handleTouchMove);
+        bar.removeEventListener("touchend", stopDragging);
+      }
     };
   }, []);
 
@@ -95,13 +118,13 @@ const ScrollProgress = () => {
   };
 
   return (
-    <aside className={styles.scrollBar}>
+    <aside ref={barRef} className={styles.scrollBar}>
       <div
         onMouseDown={startDragging}
         onTouchStart={startDragging}
         className={styles.thumb}
         style={{
-          top: `${scrollPercent}%`,
+          top: `calc(${scrollPercent}% - 10px)`,
           transition: isDragging.current ? "none" : "top 0.15s ease-out",
         }}
       >
