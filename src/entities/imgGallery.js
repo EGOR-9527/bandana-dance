@@ -144,7 +144,7 @@ export const imgGallery = [
     footer: `ВотТакМогу; Волоколамск; STARTEEN; 2025г.`,
   },
   {
-    filter: "Чемпионаты",
+    filter: "Концерты",
     photo: photo25,
     footer: `ВотТакМогу; Волоколамск; Молодежная Волна; 2025г.`,
   },
@@ -156,7 +156,7 @@ export const imgGallery = [
   {
     filter: "Чемпионаты",
     photo: photo27,
-    footer: `ВотТакМогу; Волоколамск; STARTEEN; 2024г.`,
+    footer: `Funky Kids; Москва; Project 818; 2023г.; 2024г.`,
   },
 ];
 
