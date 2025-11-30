@@ -1,0 +1,97 @@
+@font-face {
+  font-family: "Inter";
+  src: url("../../../shared/fonts/Inter.ttf");
+}
+
+.background {
+  background-color: rgb(0, 0, 0, 0.6);
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 1000vw;
+  display: flex;
+  justify-content: center;
+}
+
+.window {
+  margin-top: 10vw;
+  font-family: "Inter";
+  font-weight: 800;
+  width: 60vw;
+  height: 22vw;
+  font-size: min(1.5625vw, 2.77778vh);
+  background-color: #6366f1;
+  z-index: 100;
+  color: #c463f1;
+  background: rgba(22, 33, 62, 0.3);
+  backdrop-filter: blur(2.5px);
+  padding: 2vw;
+  line-height: 2vw;
+  border-image: linear-gradient(100deg, #6466f0 0%, #eb4899 100%);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  transform: skewX(-10deg);
+  border-image-slice: 1;
+  padding-top: 4vw;
+  position: relative;
+}
+
+.window > p {
+  transform: skewX(10deg);
+}
+
+.header_window {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
+
+.crest {
+  border: none;
+  background: transparent;
+  margin-right: 2vw;
+  margin-top: 1vw;
+  color: white;
+  font-size: 2vw;
+  cursor: pointer;
+  z-index: 10;
+}
+
+@media (max-width: 500px) {
+  .window {
+    margin-top: 60vw;
+    font-family: "Inter";
+    font-weight: 800;
+    width: 80vw;
+    height: 70vw;
+    font-size: min(3.64583vw, 6.48148vh);
+    background-color: #6366f1;
+    z-index: 100;
+    color: #c463f1;
+    background: rgba(22, 33, 62, 0.3);
+    backdrop-filter: blur(2.5px);
+    padding: 3vw;
+    line-height: 6vw;
+    border-image: linear-gradient(100deg, #6466f0 0%, #eb4899 100%);
+    border-top: 2px solid transparent;
+    border-bottom: 2px solid transparent;
+    transform: skewX(-4deg);
+    border-image-slice: 1;
+    padding-top: 8vw;
+  }
+
+  .window > p {
+    transform: skewX(4deg);
+  }
+
+  .crest {
+    margin-right: 4vw;
+    margin-top: 1vw;
+    font-size: 5vw;
+  }
+}

@@ -1,0 +1,84 @@
+.wrapper {
+  position: relative;
+  max-width: 300px;
+  margin-bottom: 20px;
+  margin-top: 7vw;
+}
+
+.select {
+  background: #2b0247;
+  color: white;
+  padding: 14px 20px;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(106, 13, 173, 0.4);
+}
+
+.arrow {
+  margin-left: 10px;
+  font-size: 14px;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #1b0130;
+  border-radius: 14px;
+  margin-top: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease;
+}
+
+.option {
+  padding: 12px 20px;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.option:hover {
+  background: rgba(106, 13, 173, 0.4);
+}
+
+.active {
+  background: rgba(106, 13, 173, 0.7);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scaleY(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@media (max-width: 1024px) {
+  .wrapper {
+    margin-top: 12vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    margin-top: 15vw;
+  }
+}
+
+@media (max-width: 600px) {
+  .wrapper {
+    margin-top: 25vw;
+  }
+}

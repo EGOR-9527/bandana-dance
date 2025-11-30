@@ -1,0 +1,79 @@
+@font-face {
+  font-family: "Roboto";
+  src: url("../../../shared/fonts/Roboto.ttf");
+}
+
+.scrollBar {
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  width: 5vw;
+  z-index: 20;
+}
+
+.thumb {
+  position: absolute;
+  left: 0;
+  transform: translateY(-50%);
+  font-family: "Roboto";
+  height: 2vw;
+  width: 100%;
+  background: #6366f1;
+  border-radius: 6px;
+  border: #7072e4 solid 2px;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  user-select: none;
+  transition: background 0.2s;
+}
+
+.thumb:hover {
+  background: #686af1;
+}
+
+.dragging {
+  cursor: grabbing;
+  background: #6366f1;
+}
+
+.percent {
+  pointer-events: none;
+}
+
+@media (max-width: 1024px) {
+  .thumb {
+    height: 4vw;
+    width: 100%;
+  }
+
+  .scrollBar {
+    width: 11vw;
+  }
+}
+
+@media (max-width: 800px) {
+  .thumb {
+    height: 5vw;
+    width: 100%;
+  }
+
+  .scrollBar {
+    width: 13vw;
+  }
+}
+
+@media (max-width: 500px) {
+  .thumb {
+    height: 7vw;
+    width: 100%;
+  }
+
+  .scrollBar {
+    width: 20vw;
+  }
+}

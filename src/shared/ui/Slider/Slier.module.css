@@ -1,0 +1,357 @@
+/* Slider.module.css — финальная версия под ВИДЕО-СЛАЙДЕР 2025 */
+
+@font-face {
+  font-family: "Inter";
+  src: url("../../fonts/Inter.ttf");
+  font-display: swap;
+}
+
+/* === Основной контейнер === */
+.slider {
+  position: relative;
+  width: 100%;
+  margin-top: 25vw;
+  padding-bottom: 8vw;
+  user-select: none;
+}
+
+/* === Обёртка с видео === */
+.wrapper {
+  position: relative;
+  width: 100%;
+  height: 46.2963vh;
+  margin-top: 6.48148vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transform: skewX(-8deg);
+  border-radius: 12px;
+}
+
+/* === Контейнер видео === */
+.videoContainer {
+  position: relative;
+  width: 50vw;
+  height: 40vw;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transform: skewX(8deg);
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: skewX(-8deg) scale(1.1); /* компенсируем skew родителя */
+}
+
+/* Оверлей с иконкой Play при наведении */
+.playOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 5vw;
+  font-weight: 900;
+  text-shadow: 0 0 20px black;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  border-radius: 12px;
+}
+
+.playOverlay > img {
+  width: 3vw;
+  height: 3vw;
+}
+
+.videoContainer:hover .playOverlay {
+  opacity: 1;
+}
+
+/* === Стрелки навигации === */
+.circle {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) skewX(8deg);
+  width: 3.5vw;
+  height: 3.5vw;
+  background: rgba(0, 0, 0, 0.65);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+
+.circle:hover {
+  background: rgba(139, 92, 246, 0.9);
+  transform: translateY(-50%) skewX(8deg) scale(1.15);
+}
+
+.circle img {
+  width: 1.8vw;
+  filter: brightness(0) invert(1);
+}
+
+.left {
+  left: 5vw;
+}
+
+.right {
+  right: 5vw;
+}
+
+/* === Название текущего видео === */
+.videoTitle {
+  position: absolute;
+  bottom: 4vw;
+  left: 50%;
+  transform: translateX(-50%) skewX(8deg);
+  color: white;
+  font-family: "Inter", sans-serif;
+  font-size: clamp(1.2rem, 2.5vw, 3rem);
+  font-weight: 800;
+  text-align: center;
+  text-shadow: 0 0 15px black;
+  z-index: 10;
+  max-width: 80%;
+  padding: 0.5em 1em;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
+}
+
+/* === Точки-индикаторы === */
+.indicators {
+  position: absolute;
+  bottom: 1.5vw;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1vw;
+  z-index: 10;
+}
+
+.dot {
+  width: 3vw;
+  height: 0.8vw;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  transform: skewX(-20deg);
+}
+
+.dot:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.activeDot {
+  width: 5vw;
+  background: #8b5cf6;
+  transform: skewX(-20deg) scale(1.1);
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
+}
+
+/* === Модальное окно (на чистом CSS) === */
+.modalToggle {
+  display: none;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s ease;
+  z-index: 9999;
+  backdrop-filter: blur(8px);
+}
+
+.modalToggle:checked ~ .modalOverlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modalContent {
+  position: relative;
+  max-width: 95vw;
+  max-height: 90vh;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+}
+
+.modalVideo {
+  width: 100%;
+  height: 100%;
+  max-height: 85vh;
+  object-fit: contain;
+}
+
+.modalVideoTitle {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: white;
+  font-family: "Inter", sans-serif;
+  font-size: clamp(1rem, 2vw, 1.8rem);
+  font-weight: 700;
+  text-align: center;
+}
+
+.modalClose {
+  position: absolute;
+  top: 1vw;
+  right: 1vw;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  width: 2vw;
+  height: 2vw;
+  border-radius: 50%;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.modalClose:hover {
+  background: #8b5cf6;
+  transform: scale(1.1);
+}
+
+/* Триггер клика по видео */
+.videoTrigger {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  z-index: 5;
+}
+
+/* === Состояния загрузки и пустоты === */
+.empty,
+.loading p {
+  text-align: center;
+  color: #aaa;
+  font-size: 1.5rem;
+  margin-top: 4rem;
+}
+
+.skeletonVideo {
+  width: 70vw;
+  max-width: 900px;
+  height: 50vh;
+  background: linear-gradient(90deg, #333 25%, #444 50%, #333 75%);
+  background-size: 200% 100%;
+  animation: loading 2s infinite;
+  border-radius: 12px;
+  margin: 0 auto;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* === Адаптив === */
+@media (max-width: 1024px) {
+  .slider {
+    margin-top: 40vw;
+  }
+  .videoContainer {
+    width: 80vw;
+    height: 60vw;
+  }
+  .circle {
+    width: 8vw;
+    height: 8vw;
+  }
+  .circle img {
+    width: 4vw;
+  }
+  .videoTitle {
+    font-size: 2rem;
+    bottom: 8vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .slider {
+    margin-top: 100vw;
+    padding-bottom: 15vw;
+  }
+  .wrapper {
+    height: 50vh;
+    transform: skewX(-4deg);
+  }
+  .videoContainer {
+    width: 90vw;
+    height: 70vw;
+  }
+  .video {
+    transform: skewX(-4deg) scale(1.08);
+  }
+  .videoTitle {
+    font-size: 1.8rem;
+    bottom: 12vw;
+    left: 50%;
+  }
+  .circle {
+    width: 12vw;
+    height: 12vw;
+  }
+  .circle img {
+    width: 6vw;
+  }
+  .dot {
+    width: 8vw;
+    height: 2vw;
+  }
+  .activeDot {
+    width: 12vw;
+  }
+}
+
+@media (max-width: 480px) {
+  .slider {
+    margin-top: 120vw;
+  }
+  .videoTitle {
+    font-size: 1.4rem;
+    padding: 0.8em;
+  }
+  .modalClose {
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.8rem;
+    top: 1rem;
+    right: 1rem;
+  }
+}

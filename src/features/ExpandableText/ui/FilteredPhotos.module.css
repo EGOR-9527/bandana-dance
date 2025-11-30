@@ -1,0 +1,153 @@
+@font-face {
+  font-family: "RussoOne";
+  src: url("../../../shared/fonts/RussoOne.ttf");
+}
+
+.photo_section {
+  padding: 20px;
+  color: #fff;
+  position: relative;
+}
+
+.selectWrapper {
+  margin-bottom: 20px;
+}
+
+.gallery {
+  column-count: 4;
+  column-gap: 20px;
+}
+
+.photo {
+  width: 100%;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  break-inside: avoid;
+}
+
+.photo:hover {
+  transform: scale(1.05);
+}
+
+/* ---------- МОДАЛЬНОЕ ОКНО ---------- */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.modalContent {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 90%;
+  max-height: 80%;
+}
+
+.modalImage {
+  width: 100%;
+  height: auto;
+  max-height: 80vh;
+  border-radius: 10px;
+  object-fit: contain;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.closeButton {
+  position: absolute;
+  top: 0.5vw;
+  right: 1vw;
+  border: none;
+  background: none;
+  color: #fff;
+  font-size: min(13.36898vw, 6.15764vh);
+  border-radius: 50%;
+  width: 2.6738vw;
+  height: 2.6738vw;
+  cursor: pointer;
+}
+
+/* ---------- ФУТЕР ---------- */
+.footer_window_photo {
+  margin-top: 20px;
+  color: #b89aff;
+  text-align: center;
+  font-family: "RussoOne", sans-serif;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+}
+
+.skeleton {
+  background: #eee;
+  background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+  border-radius: 8px;
+  background-size: 200% 100%;
+  animation: 1.5s shine linear infinite;
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
+  }
+}
+
+/* ---------- АНИМАЦИЯ ---------- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ---------- АДАПТИВ ---------- */
+@media (max-width: 1200px) {
+  .gallery {
+    column-count: 3;
+  }
+}
+
+@media (max-width: 900px) {
+  .gallery {
+    column-count: 2;
+  }
+
+  .closeButton {
+    top: 1vw;
+    right: 3vw;
+  }
+}
+
+@media (max-width: 600px) {
+  .gallery {
+    column-count: 1;
+  }
+
+  .modalImage {
+    max-height: 60vh;
+  }
+
+  .footer_window_photo {
+    font-size: 14px;
+  }
+
+  .closeButton {
+    top: 1vw;
+    right: 10vw;
+  }
+}

@@ -1,0 +1,192 @@
+@font-face {
+  font-family: "RussoOne";
+  src: url("../../fonts/RussoOne.ttf");
+}
+
+/* Кнопка с градиентом и искажением */
+.rollerogram__button__base {
+  background: linear-gradient(89.02deg, #6366f1 4.27%, #8b5cf6 94.41%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: skew(-20deg);
+  font-weight: bold;
+  padding: 12px 24px;
+  transition: transform 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.rollerogram__button__base p {
+  transform: skew(20deg);
+  margin: 0;
+}
+
+.rollerogram__button__base:hover {
+  transform: skew(-20deg) scale(1.18);
+}
+
+/* Заголовок "Обо мне" */
+.aboutMe {
+  width: 18.22917vw;
+  height: 4.16667vw;
+  font-family: "RussoOne";
+  font-size: min(2.08333vw, 3.7037vh);
+  margin-top: 11vw;
+}
+
+/* Кнопки раскрытия и скрытия */
+.expandButton,
+.collapseButton {
+  width: 13.02083vw;
+  height: 2.60417vw;
+  font-family: "RussoOne";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: normal;
+  font-weight: 400;
+  font-size: min(1.04167vw, 1.85185vh);
+  line-height: 1.66667vh;
+  margin: 2.77778vh 0 6.5vw;
+}
+
+.icon {
+  width: 2vw;
+  height: 2vw;
+  transform: skew(20deg);
+}
+
+.telegram {
+  font-size: min(1.04167vw, 1.85185vh);
+  width: 17vw;
+  height: 5vw;
+  display: flex;
+  margin-inline: 1vw;
+  justify-content: space-around;
+  background: linear-gradient(89.41deg, #6366f1 0.44%, #31aea8 99.44%);
+}
+
+.vk {
+  font-size: min(1.04167vw, 1.85185vh);
+  height: 5vw;
+  width: 17vw;
+  display: flex;
+  margin-inline: 1vw;
+  justify-content: space-around;
+  background: linear-gradient(90deg, #d94ca5 1.99%, #e11496 100%);
+}
+
+.bot {
+  font-size: min(1.04167vw, 1.85185vh);
+  height: 5vw;
+  width: 17vw;
+  display: flex;
+  justify-content: space-around;
+  margin-inline: 1vw;
+  background: linear-gradient(90deg, #8b5cf6 0%, #5915f4 100%);
+}
+
+/* Адаптив под планшеты */
+@media (max-width: 1024px) {
+  .expandButton {
+    width: 45vw;
+    height: 3vw;
+    font-size: min(2.59067vw, 2.15983vh);
+    margin: 2.77778vh 0 6.5vw 5vw;
+  }
+
+  .collapseButton {
+    width: 25vw;
+    height: 3vw;
+    font-size: min(2.59067vw, 2.15983vh);
+    margin: 2.77778vh 0 6.5vw 5vw;
+  }
+
+  .icon {
+    width: 5vw;
+    height: 5vw;
+    transform: skew(20deg);
+  }
+
+  .telegram {
+    font-size: min(1.5625vw, 2.77778vh);
+    width: 27vw;
+    height: 8vw;
+    display: flex;
+    margin-inline: 1vw;
+    justify-content: space-around;
+    background: linear-gradient(89.41deg, #6366f1 0.44%, #31aea8 99.44%);
+  }
+
+  .vk {
+    font-size: min(1.5625vw, 2.77778vh);
+    width: 27vw;
+    height: 8vw;
+    display: flex;
+    margin-inline: 1vw;
+    justify-content: space-around;
+    background: linear-gradient(90deg, #d94ca5 1.99%, #e11496 100%);
+  }
+
+  .bot {
+    font-size: min(1.5625vw, 2.77778vh);
+    width: 27vw;
+    height: 8vw;
+    display: flex;
+    justify-content: space-around;
+    margin-inline: 1vw;
+    background: linear-gradient(90deg, #8b5cf6 0%, #5915f4 100%);
+  }
+}
+
+/* Адаптив под телефоны */
+@media (max-width: 768px) {
+  .aboutMe {
+    width: 40vw;
+    height: 10vw;
+    font-size: min(4.53368vw, 3.7797vh);
+  }
+}
+
+@media (max-width: 600px) {
+  .icon {
+    width: 8vw;
+    height: 8vw;
+    transform: skew(20deg);
+  }
+
+  .telegram {
+    font-size: min(3.64583vw, 6.48148vh);
+    width: 60vw;
+    height: 15vw;
+    display: flex;
+    margin-top: 5vw;
+    margin-inline: 1vw;
+    justify-content: space-around;
+    background: linear-gradient(89.41deg, #6366f1 0.44%, #31aea8 99.44%);
+  }
+
+  .vk {
+    font-size: min(3.64583vw, 6.48148vh);
+    width: 60vw;
+    height: 15vw;
+    margin-top: 5vw;
+    display: flex;
+    margin-inline: 1vw;
+    justify-content: space-around;
+    background: linear-gradient(90deg, #d94ca5 1.99%, #e11496 100%);
+  }
+
+  .bot {
+    font-size: min(3.64583vw, 6.48148vh);
+    width: 60vw;
+    height: 15vw;
+    margin-top: 5vw;
+    display: flex;
+    justify-content: space-around;
+    margin-inline: 1vw;
+    background: linear-gradient(90deg, #8b5cf6 0%, #5915f4 100%);
+  }
+}
