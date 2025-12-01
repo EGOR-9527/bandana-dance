@@ -1,7 +1,7 @@
 // api.js
 import axios from "axios";
 
-const API_BASE = "https://bandana-dance.ru";
+const API_BASE = "http://bandana-dance.ru";
 class ApiService {
   async getEvents() {
     try {
