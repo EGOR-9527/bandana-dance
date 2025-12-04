@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import next from "../../svg/next.svg";
 import back from "../../svg/back.svg";
 import play from "../../svg/play.svg";
-import style from "./Slier.module.css";
+import style from "./Slider.module.css";
 import Title from "../../../shared/ui/Title/Title";
 import ApiService from "../../../shared/api/api";
 
@@ -13,14 +13,14 @@ const VideoSlider = ({ title }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
+  const videoRef = useRef(null);
+  const intervalRef = useRef(null);
+
   useEffect(() => {
     const fetchVideos = async () => {
       try {
         setLoading(true);
-        setError(false);
-
         const res = await ApiService.getVideo();
-
         if (res?.success && Array.isArray(res.data) && res.data.length > 0) {
           setVideos(res.data);
         } else {
@@ -33,25 +33,87 @@ const VideoSlider = ({ title }) => {
         setLoading(false);
       }
     };
-
     fetchVideos();
   }, []);
 
   const length = videos.length;
   const current = videos[index];
 
-  const nextSlide = () => setIndex((prev) => (prev + 1) % length);
-  const prevSlide = () => setIndex((prev) => (prev - 1 + length) % length);
+  const goTo = (i) => setIndex(((i % length) + length) % length);
+  const nextSlide = () => goTo(index + 1);
+  const prevSlide = () => goTo(index - 1);
 
+  // Автопрокрутка слайдера
   useEffect(() => {
     if (isPaused || length === 0) return;
-
-    const interval = setInterval(nextSlide, 8000);
-    return () => clearInterval(interval);
+    intervalRef.current = setInterval(nextSlide, 8000);
+    return () => clearInterval(intervalRef.current);
   }, [isPaused, index, length]);
 
   const handleMouseEnter = () => setIsPaused(true);
   const handleMouseLeave = () => setIsPaused(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !current) return;
+
+  }, [index, current]);
+
+  const enterFullscreen = async () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    try {
+      video.muted = false;
+      video.loop = false;
+      video.controls = true;
+
+      await video.play();
+
+      if (video.requestFullscreen) {
+        await video.requestFullscreen();
+      } else if (video.webkitRequestFullscreen) {
+        await video.webkitRequestFullscreen();
+      } else if (video.msRequestFullscreen) {
+        await video.msRequestFullscreen();
+      }
+    } catch (err) {
+      console.warn("Не удалось развернуть видео:", err);
+      video.muted = false;
+      video.controls = true;
+      video.play();
+    }
+  };
+
+  const handleFullscreenChange = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (!document.fullscreenElement) {
+      video.muted = true;
+      video.loop = true;
+      video.controls = false;
+      video.play().catch(() => {});
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
+    document.addEventListener("msfullscreenchange", handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      document.removeEventListener(
+        "webkitfullscreenchange",
+        handleFullscreenChange
+      );
+      document.removeEventListener(
+        "msfullscreenchange",
+        handleFullscreenChange
+      );
+    };
+  }, []);
 
   if (loading) {
     return (
@@ -59,7 +121,6 @@ const VideoSlider = ({ title }) => {
         <Title text={title} />
         <div className={style.loading}>
           <div className={style.skeletonVideo} />
-          <p>Загружаем видео...</p>
         </div>
       </div>
     );
@@ -69,9 +130,7 @@ const VideoSlider = ({ title }) => {
     return (
       <div className={style.slider}>
         <Title text={title} />
-        <p className={style.empty}>
-          {error ? "Не удалось загрузить видео" : "Видео пока нет"}
-        </p>
+        <p className={style.empty}>Видео пока нет</p>
       </div>
     );
   }
@@ -88,72 +147,57 @@ const VideoSlider = ({ title }) => {
         <button
           onClick={prevSlide}
           className={`${style.circle} ${style.left}`}
-          aria-label="Предыдущее видео"
+          aria-label="Предыдущее"
         >
           <img src={back} alt="" />
         </button>
 
-        <div className={style.videoContainer}>
+        <div
+          className={style.videoContainer}
+          onClick={enterFullscreen}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) =>
+            (e.key === "Enter" || e.key === " ") && enterFullscreen()
+          }
+          aria-label="Нажмите — видео на весь экран со звуком"
+        >
           <video
-            src={current.fileUrl}
+            ref={videoRef}
+            src={current?.fileUrl}
             className={style.video}
-            muted
-            loop
-            autoPlay
             playsInline
-            preload="metadata"
+            preload="auto"
           />
-          <div className={style.playOverlay}>
-            <img src={play} alt="" />
-          </div>
 
-          <label htmlFor="video-modal" className={style.videoTrigger} />
+          {!document.fullscreenElement && (
+            <div className={style.playOverlay}>
+              <img src={play} alt="На весь экран со звуком" />
+            </div>
+          )}
         </div>
 
         <button
           onClick={nextSlide}
           className={`${style.circle} ${style.right}`}
-          aria-label="Следующее видео"
+          aria-label="Следующее"
         >
           <img src={next} alt="" />
         </button>
       </div>
 
-      {current.name && <h3 className={style.videoTitle}>{current.name}</h3>}
+      {current?.name && <h3 className={style.videoTitle}>{current.name}</h3>}
 
       <div className={style.indicators}>
         {videos.map((_, i) => (
           <button
             key={i}
             className={`${style.dot} ${i === index ? style.activeDot : ""}`}
-            onClick={() => setIndex(i)}
-            aria-label={`Перейти к видео ${i + 1}`}
+            onClick={() => goTo(i)}
+            aria-label={`Видео ${i + 1}`}
           />
         ))}
       </div>
-
-      <input type="checkbox" id="video-modal" className={style.modalToggle} />
-
-      <label htmlFor="video-modal" className={style.modalOverlay}>
-        <label htmlFor="video-modal" className={style.modalContent}>
-          <label htmlFor="video-modal" className={style.modalClose}>
-            ×
-          </label>
-
-          <video
-            src={current.fileUrl}
-            controls
-            autoPlay
-            className={style.modalVideo}
-          >
-            Ваш браузер не поддерживает видео.
-          </video>
-
-          {current.name && (
-            <div className={style.modalVideoTitle}>{current.name}</div>
-          )}
-        </label>
-      </label>
     </div>
   );
 };

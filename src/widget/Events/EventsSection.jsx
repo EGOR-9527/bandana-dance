@@ -9,12 +9,11 @@ const EventsSection = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Загружаем события с сервера
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         setLoading(true);
-        const res = await ApiService.getEvents(); // ← метод из твоего api.js
+        const res = await ApiService.getEvents();
 
         if (res?.success && Array.isArray(res.data)) {
           setEvents(res.data);
