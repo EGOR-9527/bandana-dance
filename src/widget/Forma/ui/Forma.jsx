@@ -85,7 +85,7 @@ const Forma = () => {
         required
       />
       <input
-        type="number"
+        type="phone"
         name="phone"
         value={form.phone}
         onChange={handleChange}
