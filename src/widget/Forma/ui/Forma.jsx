@@ -111,7 +111,7 @@ const Forma = () => {
           {selectedCity}
         </button>
         <ul className={styles.dropdownList}>
-          {["Шахавская", "Волоколамск"].map((option) => (
+          {["Шаховская", "Волоколамск"].map((option) => (
             <li
               key={option}
               onClick={() => selectOption(option)}
