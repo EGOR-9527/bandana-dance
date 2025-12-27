@@ -2,14 +2,20 @@ import React from "react";
 import style from "./Header.module.css";
 import { useNavigate } from "react-router-dom";
 
-const Header = ({text, link}) => {
+const Header = ({ text }) => {
   const navigate = useNavigate();
 
   return (
     <div className={style.header}>
-      <p onClick={() => navigate(link)} className={style.link}>
-        {text}
-      </p>
+      {text.map((t, index) => (
+        <p
+          key={index}
+          onClick={() => navigate(t.link)}
+          className={style.link}
+        >
+          {t.page}
+        </p>
+      ))}
     </div>
   );
 };

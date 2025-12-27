@@ -14,7 +14,7 @@ const Home = () => {
     <div>
       <ParticleCanvas className="background" />
 
-      <Header text="Галерея" link="/gallery" />
+      <Header text={[{page: "Галерея", link: "/gallery"}, {page: "Команды", link: "/teams"}]} />
 
       <ModelWindowProject />
 

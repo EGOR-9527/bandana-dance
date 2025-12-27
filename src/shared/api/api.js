@@ -59,6 +59,16 @@ class ApiService {
     }
   }
 
+  async getTeams() {
+    try {
+      const response = await api.get("/api/teams");
+      return response.data;
+    } catch (err) {
+      console.warn("Видео недоступны:", err.message);
+      return { success: false, data: [] };
+    }
+  }
+
   async getVideo() {
     try {
       const response = await api.get("/api/video");
