@@ -1,0 +1,150 @@
+.forma {
+  width: 52vw;
+  max-width: 650px;
+  margin: 2vw auto;
+  padding: 2vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1vw;
+
+  background: rgba(22, 33, 62, 0.3);
+  backdrop-filter: blur(2px);
+  background-size: cover;
+  background-position: center 20%;
+
+  transform: skew(-10deg);
+
+  border: 0.3vw solid transparent;
+  border-image: linear-gradient(100deg, #6466f0 0%, #eb4899 100%);
+  border-image-slice: 1;
+  border-radius: 0.8vw;
+  box-sizing: border-box;
+  color: azure;
+
+  transition: all 0.3s ease;
+  overflow: visible; /* Чтобы dropdown не обрезался */
+}
+
+.forma input,
+.forma textarea,
+.dropdownButton,
+.forma button[type="submit"] {
+  width: 92%;
+  max-width: 500px;
+  padding: 0.8vw 1vw;
+  margin: 0.5vw 0;
+  border: none;
+  border-radius: 0.6vw;
+  outline: none;
+  font-size: 1vw;
+  box-sizing: border-box;
+  transform: skew(0deg); /* внутренние элементы ровные */
+}
+
+.textarea {
+  min-height: 5vw;
+  max-height: 15vw;
+  resize: vertical;
+  padding: 0.8vw 1vw;
+}
+
+.dropdownWrapper {
+  width: 92%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3vw;
+  position: relative; /* Для правильного позиционирования dropdown */
+}
+
+.dropdownButton {
+  background: #1e2a4b;
+  color: #fff;
+  cursor: pointer;
+  padding: 0.8vw 1vw;
+  font-size: 1vw;
+  border-radius: 0.6vw;
+  text-align: left;
+  transform: skew(0deg); /* ровный текст */
+}
+
+.dropdownList {
+  overflow: hidden;
+  max-height: 0;
+  background: #1e2a4b;
+  border-radius: 0.6vw;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.dropdownWrapper.open .dropdownList {
+  max-height: 20vw;
+  padding: 0.5vw 0;
+  opacity: 1;
+}
+
+.dropdownItem {
+  padding: 0.7vw 1vw;
+  cursor: pointer;
+  color: #fff;
+  font-size: min(1.04167vw, 1.85185vh);
+  transform: skew(0deg); /* ровный текст */
+}
+
+.dropdownItem:hover {
+  background: #6466f0;
+}
+
+.forma button[type="submit"] {
+  background: linear-gradient(90deg, #6466f0 0%, #eb4899 100%);
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1vw;
+  transition: transform 0.2s;
+  padding: 0.8vw 1.2vw;
+  transform: skew(0deg);
+}
+
+.forma button[type="submit"]:hover {
+  transform: scale(1.03);
+}
+
+/* Адаптация для маленьких экранов */
+@media (max-width: 600px) {
+  .forma {
+    width: 80vw;
+    padding: 3vw;
+    gap: 2vw;
+  }
+
+  .forma input,
+  .textarea,
+  .dropdownButton,
+  .forma button[type="submit"] {
+    width: 100%;
+    font-size: 3vw;
+    padding: 2vw;
+  }
+
+  .dropdownItem {
+    font-size: 3.5vw;
+  }
+
+  .dropdownWrapper.open .dropdownList {
+    max-height: 30vw;
+  }
+
+  .textarea {
+    min-height: 15vw;
+  }
+
+  .textarea::placeholder {
+    font-size: 3vw;
+  }
+}

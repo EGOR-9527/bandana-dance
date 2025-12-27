@@ -7,6 +7,7 @@ import Biography from "../widget/Biography/ui/Biography.jsx";
 import Slider from "../shared/ui/Slider/Slider.jsx";
 import Contact from "../widget/Contact/ui/Contact.jsx";
 import Header from "../widget/Header/ui/Header.jsx";
+import Forma from "../widget/Forma/ui/Forma.jsx";
 
 const Home = () => {
   return (
@@ -24,6 +25,8 @@ const Home = () => {
       <Biography />
 
       <Slider title="PERFORMANCES" />
+
+      <Forma/>
 
       <Contact />
     </div>
