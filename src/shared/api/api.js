@@ -6,7 +6,7 @@ const api = axios.create({
   baseURL: API_BASE,
   timeout: 10000,
   headers: {
-    "Accept": "application/json",
+    Accept: "application/json",
     "Content-Type": "application/json",
   },
   validateStatus: (status) => status < 500,
@@ -18,7 +18,10 @@ class ApiService {
       const response = await api.get("/api/events");
       return response.data;
     } catch (err) {
-      console.warn("События недоступны (возможно, атака или лимит):", err.message);
+      console.warn(
+        "События недоступны (возможно, атака или лимит):",
+        err.message
+      );
       return {
         success: false,
         data: [],
@@ -48,7 +51,7 @@ class ApiService {
           success: false,
           data: [],
           message: "Слишком много запросов. Защита от DDoS сработала.",
-          rateLimited: true
+          rateLimited: true,
         };
       }
       console.warn("Галерея недоступна:", err.message);
@@ -63,6 +66,16 @@ class ApiService {
     } catch (err) {
       console.warn("Видео недоступны:", err.message);
       return { success: false, data: [] };
+    }
+  }
+
+  async postContact(data) {
+    try {
+      const response = await api.post("/api/contact", data);
+      return response.data;
+    } catch (err) {
+      console.warn("Ошибка отправки формы:", err.message);
+      return { success: false };
     }
   }
 }

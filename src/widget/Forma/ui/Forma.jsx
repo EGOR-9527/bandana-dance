@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./Forma.module.css";
+import ApiService from "../../../shared/api/api";
 
 const Forma = () => {
   const [form, setForm] = useState({
@@ -15,13 +16,14 @@ const Forma = () => {
   const [selectedCity, setSelectedCity] = useState("Выберите город");
   const dropdownRef = useRef(null);
 
-  const handelChange = (e) => {
+  const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const toggleDropdown = () => setDropdownOpen((prev) => !prev);
 
   const selectOption = (option) => {
+    setForm({ ...form, city: option });
     setSelectedCity(option);
     setDropdownOpen(false);
   };
@@ -36,9 +38,23 @@ const Forma = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Форма отправлена:", form);
+    try {
+      await ApiService.postContact({ ...form });
+      setForm({
+        fullNameKid: "",
+        fullNameAdult: "",
+        age: "",
+        phone: "",
+        city: "",
+        message: "",
+      });
+      setSelectedCity("Выберите город");
+    } catch (err) {
+      console.error("Ошибка отправки формы:", err);
+      alert("Ошибка. Попробуйте позже.");
+    }
   };
 
   return (
@@ -47,7 +63,7 @@ const Forma = () => {
         type="text"
         name="fullNameKid"
         value={form.fullNameKid}
-        onChange={handelChange}
+        onChange={handleChange}
         placeholder="ФИО Родителя"
         required
       />
@@ -55,7 +71,7 @@ const Forma = () => {
         type="text"
         name="fullNameAdult"
         value={form.fullNameAdult}
-        onChange={handelChange}
+        onChange={handleChange}
         placeholder="ФИО Ребенка"
         required
       />
@@ -63,33 +79,28 @@ const Forma = () => {
         type="number"
         name="age"
         value={form.age}
-        onChange={handelChange}
+        onChange={handleChange}
         placeholder="Возраст ребенка"
         required
       />
-
       <input
         type="number"
         name="phone"
         value={form.phone}
-        onChange={handelChange}
+        onChange={handleChange}
         placeholder="Номер родителя"
         required
       />
-
       <textarea
         name="message"
         value={form.message}
-        onChange={handelChange}
+        onChange={handleChange}
         placeholder="Ваш вопрос (не обязательно)"
         className={styles.textarea}
       />
-
       <div
         ref={dropdownRef}
-        className={`${styles.dropdownWrapper} ${
-          dropdownOpen ? styles.open : ""
-        }`}
+        className={`${styles.dropdownWrapper} ${dropdownOpen ? styles.open : ""}`}
       >
         <button
           type="button"
@@ -110,7 +121,6 @@ const Forma = () => {
           ))}
         </ul>
       </div>
-
       <button type="submit">Отправить</button>
     </form>
   );
