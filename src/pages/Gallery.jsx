@@ -7,7 +7,7 @@ const Gallery = () => {
   return (
     <div>
       <ParticleCanvas className="background" />
-      <Header text={[{page: "Главная строница", link: "/"}, {page: "Команды", link: "/teams"}]} />
+      <Header text={[{page: "Главная страница", link: "/"}, {page: "Команды", link: "/teams"}]} />
       <FilteredPhotos />
       <ScrollProgress/>
     </div>

@@ -6,7 +6,7 @@ const Teams = () => {
   return (
     <div>
       <ParticleCanvas className="background" />
-      <Header text={[{page: "Главная строница", link: "/"}, {page: "Галерея", link: "/gallery"}]} />
+      <Header text={[{page: "Главная страница", link: "/"}, {page: "Галерея", link: "/gallery"}]} />
       <TeamsCarts/>
     </div>
   );
