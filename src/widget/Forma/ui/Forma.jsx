@@ -59,6 +59,7 @@ const Forma = () => {
 
   return (
     <form className={styles.forma} onSubmit={handleSubmit}>
+      <h1>Запишитесь на занятия уже сейчас!</h1>
       <input
         type="text"
         name="fullNameKid"
