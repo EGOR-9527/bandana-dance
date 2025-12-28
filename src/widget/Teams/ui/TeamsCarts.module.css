@@ -11,11 +11,10 @@
   gap: 3vw;
 }
 
-/* ───────── КАРТОЧКА ───────── */
 .card {
   display: grid;
-  grid-template-columns: 35% 65%; /* Четкое разделение на 35% лево, 65% право */
-  min-height: 30vw; /* Фиксированная высота карточки */
+  grid-template-columns: 35% 65%;
+  min-height: 30vw;
   
   background: rgba(22, 33, 62, 0.35);
   backdrop-filter: blur(3px);
@@ -35,7 +34,6 @@
   transform: skew(-6deg) scale(1.02);
 }
 
-/* ───────── ЛЕВЫЙ БЛОК (ТОЛЬКО ФОТО И НАЗВАНИЕ) ───────── */
 .left {
   position: relative;
   background: #0b1220;
@@ -56,7 +54,6 @@
   display: block;
 }
 
-/* Накладываем название поверх фото */
 .nameOverlay {
   position: absolute;
   bottom: 0;
@@ -80,11 +77,10 @@
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
 }
 
-/* ───────── ПРАВЫЙ БЛОК (ТОЛЬКО ИНФОРМАЦИЯ) ───────── */
 .right {
   padding: 2vw 2.5vw;
   display: flex;
-  align-items: center; /* Центрируем содержимое по вертикали */
+  align-items: center;
 }
 
 .infoContainer {
@@ -95,7 +91,6 @@
   font-family: "Roboto";
 }
 
-/* Секции информации */
 .sectionTitle {
   font-size: min(1.1vw, 2vh);
   font-weight: bold;
@@ -116,7 +111,6 @@
   opacity: 0.95;
 }
 
-/* Детали в виде сетки */
 .detailsGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -145,7 +139,6 @@
   font-weight: 500;
 }
 
-/* Секции преподавателей и достижений */
 .instructorsSection,
 .achievementsSection {
   margin-top: 0.5vw;
@@ -173,11 +166,264 @@
   font-size: min(0.9vw, 1.7vh);
 }
 
+.achievementText {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
 .trophyIcon {
+  flex-shrink: 0;
+  margin-top: 0.2vw;
+}
+.showMoreItem {
+  margin-top: 0.8vw;
+}
+
+.showMoreButton {
+  background: linear-gradient(100deg, #6466f0 0%, #eb4899 100%);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 0.5vw 1vw;
+  font-family: "Roboto";
+  font-size: min(0.8vw, 1.5vh);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5vw;
+  transition: all 0.3s ease;
+  width: 100%;
+  justify-content: center;
+}
+
+.showMoreButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(235, 72, 153, 0.3);
+}
+
+.moreIcon {
+  font-size: min(1vw, 1.8vh);
+}
+
+.recruitingSection {
+  display: flex;
+  align-items: center;
+  gap: 0.8vw;
+}
+
+.statusOpen,
+.statusClosed {
+  padding: 0.3vw 0.8vw;
+  border-radius: 20px;
+  font-size: min(0.8vw, 1.5vh);
+  font-weight: 500;
+  margin: 0;
+}
+
+.statusOpen {
+  background-color: rgba(76, 175, 80, 0.2);
+  color: #4CAF50;
+  border: 1px solid #4CAF50;
+}
+
+.statusClosed {
+  background-color: rgba(244, 67, 54, 0.2);
+  color: #F44336;
+  border: 1px solid #F44336;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+  padding: 2vw;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modalContent {
+  background: linear-gradient(135deg, #1a1f38 0%, #0f1529 100%);
+  border-radius: 20px;
+  width: 50vw;
+  max-height: 85vh;
+  overflow: hidden;
+  border: 2px solid;
+  border-image: linear-gradient(100deg, #6466f0 0%, #eb4899 100%);
+  border-image-slice: 1;
+  animation: slideUp 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modalHeader {
+  padding: 1.5vw 2vw;
+  border-bottom: 1px solid rgba(235, 72, 153, 0.3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   flex-shrink: 0;
 }
 
-/* ───────── ЗАГРУЗКА ───────── */
+.modalTitle {
+  font-family: "Roboto";
+  font-size: min(1.4vw, 2.5vh);
+  color: white;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.8vw;
+}
+
+.modalClose {
+  background: none;
+  border: none;
+  color: #eb4899;
+  font-size: min(1.5vw, 2.8vh);
+  cursor: pointer;
+  padding: 0.5vw;
+  border-radius: 50%;
+  width: 2.5vw;
+  height: 2.5vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.modalClose:hover {
+  background: rgba(235, 72, 153, 0.2);
+  transform: rotate(90deg);
+}
+
+.modalBody {
+  padding: 2vw;
+  overflow-y: auto;
+  flex: 1;
+  max-height: calc(85vh - 12vw);
+}
+
+.modalAchievements {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1vw;
+}
+
+.modalAchievementItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1vw;
+  padding: 1vw;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border-left: 4px solid #eb4899;
+  transition: all 0.3s ease;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.modalAchievementItem:hover {
+  background: rgba(235, 72, 153, 0.1);
+  transform: translateX(5px);
+}
+
+.achievementNumber {
+  background: linear-gradient(100deg, #6466f0 0%, #eb4899 100%);
+  color: white;
+  width: 2vw;
+  height: 2vw;
+  min-width: 2vw;
+  min-height: 2vw;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Roboto";
+  font-weight: bold;
+  font-size: min(0.8vw, 1.5vh);
+  flex-shrink: 0;
+}
+
+.modalAchievementText {
+  font-size: min(0.95vw, 1.8vh);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  width: 100%;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  display: block;
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.modalStats {
+  margin-top: 1.5vw;
+  padding-top: 1.5vw;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: min(0.9vw, 1.7vh);
+}
+
+.modalFooter {
+  padding: 1.5vw 2vw;
+  border-top: 1px solid rgba(235, 72, 153, 0.3);
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.modalButton {
+  background: linear-gradient(100deg, #6466f0 0%, #eb4899 100%);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  padding: 0.8vw 2vw;
+  font-family: "Roboto";
+  font-size: min(0.9vw, 1.7vh);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modalButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(235, 72, 153, 0.4);
+}
+
 .loading {
   text-align: center;
   color: white;
@@ -185,7 +431,6 @@
   font-size: 1.2vw;
 }
 
-/* ───────── АДАПТАЦИЯ ───────── */
 @media (max-width: 768px) {
   .container {
     width: 85vw;
@@ -240,6 +485,83 @@
   .instructors,
   .achievementItem {
     font-size: 3.2vw;
+  }
+
+  .statusOpen,
+  .statusClosed {
+    font-size: 3vw;
+    padding: 0.8vw 2vw;
+  }
+
+  .showMoreButton {
+    font-size: 3vw;
+    padding: 1.5vw;
+  }
+
+  .moreIcon {
+    font-size: 3.5vw;
+  }
+
+  .modalOverlay {
+    padding: 4vw;
+  }
+
+  .modalContent {
+    width: 90vw;
+    max-height: 90vh;
+    margin: 0;
+  }
+
+  .modalHeader {
+    padding: 4vw;
+  }
+
+  .modalTitle {
+    font-size: 4vw;
+  }
+
+  .modalClose {
+    font-size: 5vw;
+    width: 8vw;
+    height: 8vw;
+  }
+
+  .modalBody {
+    padding: 4vw;
+    max-height: calc(90vh - 25vw);
+  }
+
+  .modalAchievementItem {
+    padding: 3vw;
+    gap: 3vw;
+  }
+
+  .achievementNumber {
+    width: 6vw;
+    height: 6vw;
+    font-size: 3vw;
+    min-width: 6vw;
+    min-height: 6vw;
+  }
+
+  .modalAchievementText {
+    font-size: 3.5vw;
+    line-height: 1.5;
+  }
+
+  .modalStats {
+    font-size: 3.2vw;
+    margin-top: 4vw;
+    padding-top: 4vw;
+  }
+
+  .modalFooter {
+    padding: 4vw;
+  }
+
+  .modalButton {
+    font-size: 3.5vw;
+    padding: 2vw 6vw;
   }
 
   .loading {
