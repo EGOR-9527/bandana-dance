@@ -165,12 +165,10 @@ const TeamsCarts = () => {
                               }}
                               className={styles.buttonRecord}
                             >
-                              🎯 Записаться
+                              Записаться
                             </button>
                           ) : (
-                            <div className={styles.closedMessage}>
-                              Набор временно закрыт
-                            </div>
+                            ""
                           )}
                         </li>
                       )}
