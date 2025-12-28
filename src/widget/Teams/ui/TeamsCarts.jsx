@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styles from "./TeamsCarts.module.css";
 import ApiService from "../../../shared/api/api";
+import { useNavigate } from "react-router-dom";
 
 const TeamsCarts = () => {
   const [teams, setTeams] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -25,9 +27,9 @@ const TeamsCarts = () => {
 
   const shouldShowMoreButton = (achievements) => {
     if (!achievements || achievements.length === 0) return false;
-    
+
     const totalLength = achievements.join(" ").length;
-    
+
     return achievements.length > 3 || totalLength > 150;
   };
 
@@ -89,13 +91,14 @@ const TeamsCarts = () => {
                       </div>
                     </div>
                   )}
-
                   {team.ageRange && (
                     <div className={styles.detailItem}>
                       <span className={styles.detailIcon}>🎂</span>
                       <div>
                         <div className={styles.detailLabel}>Возраст</div>
-                        <div className={styles.detailValue}>{team.ageRange}</div>
+                        <div className={styles.detailValue}>
+                          {team.ageRange}
+                        </div>
                       </div>
                     </div>
                   )}
@@ -111,7 +114,13 @@ const TeamsCarts = () => {
 
                   <div className={styles.recruitingSection}>
                     <h4 className={styles.sectionTitle}>Набор: </h4>
-                    <p className={team.isRecruiting ? styles.statusOpen : styles.statusClosed}>
+                    <p
+                      className={
+                        team.isRecruiting
+                          ? styles.statusOpen
+                          : styles.statusClosed
+                      }
+                    >
                       {team.isRecruiting ? "открыт" : "закрыт"}
                     </p>
                   </div>
@@ -127,16 +136,42 @@ const TeamsCarts = () => {
                           <span className={styles.achievementText}>{a}</span>
                         </li>
                       ))}
-                      
+
                       {shouldShowMoreButton(team.achievements) && (
-                        <li className={styles.showMoreItem}>
-                          <button 
+                        <li className={styles.detailsGrid}>
+                          <button
                             className={styles.showMoreButton}
                             onClick={() => openAchievementsModal(team)}
                           >
                             <span className={styles.moreIcon}>🔽</span>
-                            <span>Посмотреть все ({team.achievements.length})</span>
+                            <span>
+                              Посмотреть все ({team.achievements.length})
+                            </span>
                           </button>
+
+                          {team.isRecruiting ? (
+                            <button
+                              onClick={() => {
+                                navigate("/");
+                                setTimeout(() => {
+                                  const element =
+                                    document.getElementById("forma");
+                                  if (element) {
+                                    element.scrollIntoView({
+                                      behavior: "smooth",
+                                    });
+                                  }
+                                }, 500);
+                              }}
+                              className={styles.buttonRecord}
+                            >
+                              🎯 Записаться
+                            </button>
+                          ) : (
+                            <div className={styles.closedMessage}>
+                              Набор временно закрыт
+                            </div>
+                          )}
                         </li>
                       )}
                     </ul>
@@ -150,16 +185,22 @@ const TeamsCarts = () => {
 
       {showModal && selectedTeam && (
         <div className={styles.modalOverlay} onClick={closeAchievementsModal}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className={styles.modalHeader}>
               <h3 className={styles.modalTitle}>
                 🏆 Достижения команды "{selectedTeam.name}"
               </h3>
-              <button className={styles.modalClose} onClick={closeAchievementsModal}>
+              <button
+                className={styles.modalClose}
+                onClick={closeAchievementsModal}
+              >
                 ✕
               </button>
             </div>
-            
+
             <div className={styles.modalBody}>
               <ul className={styles.modalAchievements}>
                 {selectedTeam.achievements.map((achievement, index) => (
@@ -169,14 +210,19 @@ const TeamsCarts = () => {
                   </li>
                 ))}
               </ul>
-              
+
               <div className={styles.modalStats}>
-                <span>Всего достижений: {selectedTeam.achievements.length}</span>
+                <span>
+                  Всего достижений: {selectedTeam.achievements.length}
+                </span>
               </div>
             </div>
-            
+
             <div className={styles.modalFooter}>
-              <button className={styles.modalButton} onClick={closeAchievementsModal}>
+              <button
+                className={styles.modalButton}
+                onClick={closeAchievementsModal}
+              >
                 Закрыть
               </button>
             </div>

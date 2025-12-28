@@ -15,14 +15,14 @@
   display: grid;
   grid-template-columns: 35% 65%;
   min-height: 30vw;
-  
+
   background: rgba(22, 33, 62, 0.35);
   backdrop-filter: blur(3px);
-  
+
   border: 2px solid transparent;
   border-image: linear-gradient(100deg, #6466f0 0%, #eb4899 100%);
   border-image-slice: 1;
-  
+
   border-radius: 18px;
   overflow: hidden;
   color: azure;
@@ -59,11 +59,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.85),
-    rgba(0, 0, 0, 0.15)
-  );
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.15));
   padding: 1.5vw;
 }
 
@@ -167,22 +163,12 @@
 }
 
 .achievementText {
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  line-height: 1.4;
-  word-wrap: break-word;
+  color: #ffff;
 }
 
 .trophyIcon {
   flex-shrink: 0;
   margin-top: 0.2vw;
-}
-.showMoreItem {
-  margin-top: 0.8vw;
 }
 
 .showMoreButton {
@@ -228,14 +214,14 @@
 
 .statusOpen {
   background-color: rgba(76, 175, 80, 0.2);
-  color: #4CAF50;
-  border: 1px solid #4CAF50;
+  color: #4caf50;
+  border: 1px solid #4caf50;
 }
 
 .statusClosed {
   background-color: rgba(244, 67, 54, 0.2);
-  color: #F44336;
-  border: 1px solid #F44336;
+  color: #f44336;
+  border: 1px solid #f44336;
 }
 
 .modalOverlay {
@@ -255,13 +241,27 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.closedMessage {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  font-style: italic;
+  padding: 10px;
+  text-align: center;
+  background: rgba(244, 67, 54, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(244, 67, 54, 0.3);
 }
 
 .modalContent {
   background: linear-gradient(135deg, #1a1f38 0%, #0f1529 100%);
-  border-radius: 20px;
   width: 50vw;
   max-height: 85vh;
   overflow: hidden;
@@ -274,11 +274,11 @@
 }
 
 @keyframes slideUp {
-  from { 
+  from {
     opacity: 0;
     transform: translateY(30px);
   }
-  to { 
+  to {
     opacity: 1;
     transform: translateY(0);
   }
@@ -431,10 +431,79 @@
   font-size: 1.2vw;
 }
 
+.buttonRecord {
+  width: 15vw;
+  height: 3vw;
+  font-size: 1vw;
+  margin-left: 3vw;
+  background: linear-gradient(89.02deg, #6366f1 4.27%, #8b5cf6 94.41%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: skew(-20deg);
+  font-weight: bold;
+  padding: 12px 24px;
+  transition: transform 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.modalBody::-webkit-scrollbar {
+  width: 10px;
+}
+
+.modalBody::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  margin: 5px 0;
+}
+
+.modalBody::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #6466f0, #eb4899);
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  background-size: 200% 200%;
+  animation: scrollbarGradient 3s ease infinite;
+}
+
+.modalBody::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #7b7df2, #f05fa3);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.modalBody {
+  scrollbar-width: thin;
+  scrollbar-color: #eb4899 rgba(255, 255, 255, 0.05);
+}
+
+@keyframes scrollbarGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.modalBody {
+  scroll-behavior: smooth;
+}
+
 @media (max-width: 768px) {
   .container {
     width: 85vw;
     margin: 30vw auto;
+  }
+
+  .buttonRecord {
+    width: 100%;
+    margin-left: 0;
+    font-size: 4vw;
+    height: 8vw;
   }
 
   .card {
