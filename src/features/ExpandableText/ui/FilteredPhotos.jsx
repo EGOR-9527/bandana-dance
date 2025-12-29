@@ -64,8 +64,8 @@ const FilteredPhotos = () => {
     loadPhotos(true);
   }, [filter, loadPhotos]);
 
-  // Ленивая подгрузка при скролле
-  const lastPhotoRef = useCallback(
+  // Sentinel для ленивой подгрузки
+  const sentinelRef = useCallback(
     (node) => {
       if (loading) return;
       if (observer.current) observer.current.disconnect();
@@ -95,36 +95,18 @@ const FilteredPhotos = () => {
       </div>
 
       <div className={style.gallery}>
-        {filteredPhotos.map((img, idx) => {
-          if (idx === filteredPhotos.length - 1) {
-            return (
-              <img
-                ref={lastPhotoRef}
-                key={img.id}
-                src={img.fileUrl}
-                alt={img.footer || img.filter || "Фото"}
-                className={style.photo}
-                loading="lazy"
-                onClick={() =>
-                  setSelectedImage({ src: img.fileUrl, footer: img.footer })
-                }
-              />
-            );
-          } else {
-            return (
-              <img
-                key={img.id}
-                src={img.fileUrl}
-                alt={img.footer || img.filter || "Фото"}
-                className={style.photo}
-                loading="lazy"
-                onClick={() =>
-                  setSelectedImage({ src: img.fileUrl, footer: img.footer })
-                }
-              />
-            );
-          }
-        })}
+        {filteredPhotos.map((img) => (
+          <img
+            key={img.id}
+            src={img.fileUrl}
+            alt={img.footer || img.filter || "Фото"}
+            className={style.photo}
+            loading="lazy"
+            onClick={() =>
+              setSelectedImage({ src: img.fileUrl, footer: img.footer })
+            }
+          />
+        ))}
 
         {loading && [...Array(12)].map((_, i) => <div key={i} className={style.skeleton} />)}
 
@@ -135,6 +117,9 @@ const FilteredPhotos = () => {
               : `Фотографий в категории "${filter}" не найдено`}
           </p>
         )}
+
+        {/* Sentinel для lazy load */}
+        <div ref={sentinelRef}></div>
       </div>
 
       {selectedImage && (
