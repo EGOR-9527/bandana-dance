@@ -108,8 +108,6 @@ const FilteredPhotos = () => {
           />
         ))}
 
-        {loading && [...Array(12)].map((_, i) => <div key={i} />)}
-
         {!loading && filteredPhotos.length === 0 && (
           <p className={style.noPhotos}>
             {filter === "Все"

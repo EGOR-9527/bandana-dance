@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "RussoOne";
+  src: url("../../../shared/fonts/RussoOne.ttf");
+}
+
 .photo_section {
   padding: 20px;
   color: #fff;
@@ -8,36 +13,22 @@
   margin-bottom: 20px;
 }
 
-/* ====== GRID вместо column-count ====== */
 .gallery {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  column-count: 4;
+  column-gap: 20px;
 }
 
 .photo {
   width: 100%;
+  margin-bottom: 20px;
   border-radius: 10px;
   cursor: pointer;
-  transition: transform 0.3s ease, opacity 0.5s ease;
-  opacity: 0;
-  animation: fadeInPhoto 0.5s forwards;
+  transition: transform 0.3s ease;
+  break-inside: avoid;
 }
 
 .photo:hover {
   transform: scale(1.05);
-}
-
-@keyframes fadeInPhoto {
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes shine {
-  to {
-    background-position-x: -200%;
-  }
 }
 
 /* ---------- МОДАЛЬНОЕ ОКНО ---------- */
@@ -56,11 +47,11 @@
 
 .modalContent {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   max-width: 90%;
   max-height: 80%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .modalImage {
@@ -86,6 +77,7 @@
   cursor: pointer;
 }
 
+/* ---------- ФУТЕР ---------- */
 .footer_window_photo {
   margin-top: 20px;
   color: #b89aff;
@@ -95,16 +87,35 @@
   letter-spacing: 0.5px;
 }
 
-/* ---------- Адаптив ---------- */
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
+  }
+}
+
+/* ---------- АНИМАЦИЯ ---------- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ---------- АДАПТИВ ---------- */
 @media (max-width: 1200px) {
   .gallery {
-    grid-template-columns: repeat(3, 1fr);
+    column-count: 3;
   }
 }
 
 @media (max-width: 900px) {
   .gallery {
-    grid-template-columns: repeat(2, 1fr);
+    column-count: 2;
   }
 
   .closeButton {
@@ -115,7 +126,7 @@
 
 @media (max-width: 600px) {
   .gallery {
-    grid-template-columns: repeat(1, 1fr);
+    column-count: 1;
   }
 
   .modalImage {
