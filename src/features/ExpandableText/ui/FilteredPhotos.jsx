@@ -1,101 +1,91 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import style from "./FilteredPhotos.module.css";
 import ApiService from "../../../shared/api/api";
 import CustomSelect from "./CustomSelect";
 
 const FilteredPhotos = () => {
   const [filter, setFilter] = useState("Все");
-  const [filters, setFilters] = useState(["Все"]);
   const [photos, setPhotos] = useState([]);
+  const [filters, setFilters] = useState(["Все"]);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [loadingFilters, setLoadingFilters] = useState(true);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [loadingFilters, setLoadingFilters] = useState(true);
-  const [selectedImage, setSelectedImage] = useState(null);
 
-  const loaderRef = useRef(null);
+  const observer = useRef();
 
-  /* ---------- загрузка фильтров ---------- */
+  // Подгружаем фильтры один раз
   useEffect(() => {
     const loadFilters = async () => {
       try {
-        const res = await ApiService.getGalleryFilters();
-        if (res.success) {
-          setFilters(["Все", ...res.data]);
+        setLoadingFilters(true);
+        const filtersRes = await ApiService.getGalleryFilters();
+        if (filtersRes.success) {
+          setFilters(filtersRes.data);
+          setFilter((prev) => (filtersRes.data.includes(prev) ? prev : "Все"));
         }
-      } catch (e) {
-        console.error("Ошибка загрузки фильтров", e);
+      } catch (err) {
+        console.error(err);
       } finally {
         setLoadingFilters(false);
       }
     };
-
     loadFilters();
   }, []);
 
-  /* ---------- загрузка фото ---------- */
-  const loadPhotos = async (reset = false) => {
-    if (loading || (!hasMore && !reset)) return;
-
-    setLoading(true);
-    try {
-      const res = await ApiService.getGallery({
-        page: reset ? 1 : page,
-        filter: filter === "Все" ? null : filter,
-      });
-
-      if (res.success) {
-        setPhotos(reset ? res.data : [...res.data]);
-        setPage(reset ? 2 : page + 1);
-        setHasMore(res.hasMore);
+  // Подгружаем фото
+  const loadPhotos = useCallback(
+    async (reset = false) => {
+      if (!hasMore && !reset) return;
+      try {
+        setLoading(true);
+        const currentPage = reset ? 1 : page;
+        const galleryRes = await ApiService.getGallery({ page: currentPage, limit: 12 });
+        if (galleryRes.success) {
+          setPhotos((prev) =>
+            reset ? galleryRes.data : [...prev, ...galleryRes.data]
+          );
+          setHasMore(galleryRes.hasMore);
+          if (!reset) setPage((prev) => prev + 1);
+          else setPage(2);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
       }
-    } catch (e) {
-      console.error("Ошибка загрузки фото", e);
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [page, hasMore]
+  );
 
-  /* ---------- первая загрузка ---------- */
+  // Сбрасываем страницу при смене фильтра
   useEffect(() => {
     loadPhotos(true);
-    // eslint-disable-next-line
-  }, []);
+  }, [filter, loadPhotos]);
 
-  /* ---------- смена фильтра ---------- */
-  useEffect(() => {
-    setPhotos([]);
-    setPage(1);
-    setHasMore(true);
-    loadPhotos(true);
-    // eslint-disable-next-line
-  }, [filter]);
-
-  /* ---------- infinite scroll ---------- */
-  useEffect(() => {
-    if (!loaderRef.current) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !loading && hasMore) {
+  // Ленивая подгрузка при скролле
+  const lastPhotoRef = useCallback(
+    (node) => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
           loadPhotos();
         }
-      },
-      { rootMargin: "200px" }
-    );
-
-    observer.observe(loaderRef.current);
-
-    return () => observer.disconnect();
-    // eslint-disable-next-line
-  }, [hasMore]);
+      });
+      if (node) observer.current.observe(node);
+    },
+    [loading, hasMore, loadPhotos]
+  );
 
   const filteredPhotos =
-    filter === "Все" ? photos : photos.filter((img) => img.filter === filter);
+    filter === "Все"
+      ? photos
+      : photos.filter((img) => img.filter === filter);
 
   return (
     <section className={style.photo_section}>
-      {/* ---------- селект ---------- */}
       <div className={style.selectWrapper}>
         {loadingFilters ? (
           <div className={style.selectSkeleton}>Загрузка фильтров...</div>
@@ -104,28 +94,39 @@ const FilteredPhotos = () => {
         )}
       </div>
 
-      {/* ---------- галерея ---------- */}
       <div className={style.gallery}>
-        {filteredPhotos.map((img) => (
-          <img
-            key={img.id}
-            src={img.fileUrl}
-            alt={img.footer || img.filter || "Фото"}
-            className={style.photo}
-            loading="lazy"
-            onClick={() =>
-              setSelectedImage({
-                src: img.fileUrl,
-                footer: img.footer,
-              })
-            }
-          />
-        ))}
+        {filteredPhotos.map((img, idx) => {
+          if (idx === filteredPhotos.length - 1) {
+            return (
+              <img
+                ref={lastPhotoRef}
+                key={img.id}
+                src={img.fileUrl}
+                alt={img.footer || img.filter || "Фото"}
+                className={style.photo}
+                loading="lazy"
+                onClick={() =>
+                  setSelectedImage({ src: img.fileUrl, footer: img.footer })
+                }
+              />
+            );
+          } else {
+            return (
+              <img
+                key={img.id}
+                src={img.fileUrl}
+                alt={img.footer || img.filter || "Фото"}
+                className={style.photo}
+                loading="lazy"
+                onClick={() =>
+                  setSelectedImage({ src: img.fileUrl, footer: img.footer })
+                }
+              />
+            );
+          }
+        })}
 
-        {loading &&
-          [...Array(12)].map((_, i) => (
-            <div key={i} className={style.skeleton} />
-          ))}
+        {loading && [...Array(12)].map((_, i) => <div key={i} className={style.skeleton} />)}
 
         {!loading && filteredPhotos.length === 0 && (
           <p className={style.noPhotos}>
@@ -136,10 +137,6 @@ const FilteredPhotos = () => {
         )}
       </div>
 
-      {/* ---------- observer ---------- */}
-      {hasMore && <div ref={loaderRef} className={style.loader} />}
-
-      {/* ---------- модалка ---------- */}
       {selectedImage && (
         <div
           className={style.modalOverlay}
