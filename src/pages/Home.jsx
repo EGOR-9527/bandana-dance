@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { ParticleCanvas } from "../shared/ui/Canvas/ParticleCanvas.jsx";
 import ModelWindowProject from "../features/ExpandableText/ui/ModelWindowProject.jsx";
 import HeroSerction from "../widget/HeroSection/ui/HeroSerction.jsx";
@@ -11,7 +11,7 @@ import Forma from "../widget/Forma/ui/Forma.jsx";
 
 const Home = () => {
   return (
-    <div>
+    <div >
       <ParticleCanvas className="background" />
 
       <Header text={[{page: "Галерея", link: "/gallery"}, {page: "Команды", link: "/teams"}]} />

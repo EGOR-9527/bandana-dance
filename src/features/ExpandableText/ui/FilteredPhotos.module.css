@@ -18,6 +18,24 @@
   column-gap: 20px;
 }
 
+.loader {
+  height: 40px;
+}
+
+.noPhotos {
+  color: #aaa;
+  text-align: center;
+  padding: 40px 0;
+  font-size: 16px;
+}
+
+.selectSkeleton {
+  height: 44px;
+  background: #eee;
+  border-radius: 8px;
+  animation: shine 1.5s infinite linear;
+}
+
 .photo {
   width: 100%;
   margin-bottom: 20px;

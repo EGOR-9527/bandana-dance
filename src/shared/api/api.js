@@ -40,9 +40,9 @@ class ApiService {
     }
   }
 
-  async getGallery() {
+  async getGallery(page = 1, limit = 12) {
     try {
-      const response = await api.get("/api/gallery");
+      const response = await api.get(`/api/gallery?page=${page}&limit=${limit}`);
       return response.data;
     } catch (err) {
       if (err.response?.status === 429) {
