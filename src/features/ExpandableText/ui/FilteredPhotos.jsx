@@ -45,10 +45,8 @@ const FilteredPhotos = () => {
       });
 
       if (res.success) {
-        setPhotos((prev) =>
-          reset ? res.data : [...res.data]
-        );
-        setPage((prev) => prev + 1);
+        setPhotos(reset ? res.data : [...res.data]);
+        setPage(reset ? 2 : page + 1);
         setHasMore(res.hasMore);
       }
     } catch (e) {
@@ -79,7 +77,7 @@ const FilteredPhotos = () => {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && !loading && hasMore) {
           loadPhotos();
         }
       },
@@ -93,9 +91,7 @@ const FilteredPhotos = () => {
   }, [hasMore]);
 
   const filteredPhotos =
-    filter === "Все"
-      ? photos
-      : photos.filter((img) => img.filter === filter);
+    filter === "Все" ? photos : photos.filter((img) => img.filter === filter);
 
   return (
     <section className={style.photo_section}>
@@ -104,11 +100,7 @@ const FilteredPhotos = () => {
         {loadingFilters ? (
           <div className={style.selectSkeleton}>Загрузка фильтров...</div>
         ) : (
-          <CustomSelect
-            options={filters}
-            value={filter}
-            onChange={setFilter}
-          />
+          <CustomSelect options={filters} value={filter} onChange={setFilter} />
         )}
       </div>
 

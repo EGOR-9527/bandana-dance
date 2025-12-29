@@ -14,8 +14,9 @@
 }
 
 .gallery {
-  column-count: 4;
-  column-gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
 }
 
 .loader {
@@ -38,11 +39,10 @@
 
 .photo {
   width: 100%;
-  margin-bottom: 20px;
   border-radius: 10px;
   cursor: pointer;
   transition: transform 0.3s ease;
-  break-inside: avoid;
+  object-fit: cover;
 }
 
 .photo:hover {
