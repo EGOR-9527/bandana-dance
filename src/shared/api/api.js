@@ -40,20 +40,11 @@ class ApiService {
     }
   }
 
-  async getGallery(page = 1, limit = 12) {
+  async getGallery() {
     try {
-      const response = await api.get(`/api/gallery?page=${page}&limit=${limit}`);
+      const response = await api.get(`/api/gallery`);
       return response.data;
     } catch (err) {
-      if (err.response?.status === 429) {
-        console.warn("Сработало ограничение запросов (rate limit)");
-        return {
-          success: false,
-          data: [],
-          message: "Слишком много запросов. Защита от DDoS сработала.",
-          rateLimited: true,
-        };
-      }
       console.warn("Галерея недоступна:", err.message);
       return { success: false, data: [] };
     }
