@@ -1,169 +1,112 @@
 @font-face {
-  font-family: "RussoOne";
-  src: url("../../../shared/fonts/RussoOne.ttf");
+  font-family: "Inter";
+  src: url("../../../shared/fonts/Inter.ttf");
 }
 
-.photo_section {
-  padding: 20px;
-  color: #fff;
-  position: relative;
-}
-
-.selectWrapper {
-  margin-bottom: 20px;
-}
-
-.gallery {
-  column-count: 4;
-  column-gap: 20px;
-}
-
-.photo {
-  width: 100%;
-  margin-bottom: 20px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  break-inside: avoid;
-}
-
-.photo:hover {
-  transform: scale(1.05);
-}
-
-/* ---------- МОДАЛЬНОЕ ОКНО ---------- */
-.modalOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(6px);
+.hidden {
   display: flex;
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.visible {
+  transition: 1.5s;
+  opacity: 1;
+}
+
+.expandableText {
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  animation: fadeIn 0.3s ease;
-}
-
-.modalContent {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  max-width: 90%;
-  max-height: 80%;
+  margin-top: 3vh;
 }
 
-.modalImage {
-  width: 100%;
-  height: auto;
-  max-height: 80vh;
-  border-radius: 10px;
-  object-fit: contain;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-}
-
-.closeButton {
+.expandableText::before {
+  content: "";
   position: absolute;
-  top: 0.5vw;
-  right: 1vw;
-  border: none;
-  background: none;
-  color: #fff;
-  font-size: min(13.36898vw, 6.15764vh);
-  border-radius: 50%;
-  width: 2.6738vw;
-  height: 2.6738vw;
+  top: -0.7vw;
+  width: 40.75vw;
+  height: 0.10417vw;
+  background-color: #d9d9d9;
+}
+
+.expandableText p {
+  font-size: min(1.04167vw, 1.85185vh);
+  font-family: "Inter";
+  font-style: normal;
+  width: 40.66667vw;
+  font-weight: 400;
+  line-height: 150%;
+  margin-top: 1.85185vh;
+  color: #ffffff;
+}
+
+.highlight {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 900;
+  line-height: 150%;
+  color: #6366f1;
+  position: relative;
   cursor: pointer;
 }
 
-/* ---------- ФУТЕР ---------- */
-.footer_window_photo {
-  margin-top: 20px;
-  color: #b89aff;
-  text-align: center;
-  font-family: "RussoOne", sans-serif;
-  font-size: 18px;
-  letter-spacing: 0.5px;
+.xyi {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 900;
+  line-height: 150%;
+  color: #6366f1;
+  position: relative;
+  cursor: pointer;
 }
 
-.loadingIndicator {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 20px;
-  color: #fff;
-  font-size: 16px;
+.highlight::after {
+  position: absolute;
+  content: "";
+  width: 0%;
+  height: 0.1vw;
+  bottom: 0;
+  left: 0;
+  background-color: #6366f1;
+  z-index: 100;
+  transition: all 1s;
 }
 
-.selectSkeleton {
-  width: 200px;
-  height: 40px;
-  background: linear-gradient(90deg, #333 25%, #444 50%, #333 75%);
-  background-size: 200% 100%;
-  animation: loading 1.5s infinite;
-  border-radius: 8px;
+.highlight:hover::after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 0.1vw;
+  bottom: 0;
+  left: 0;
+  background-color: #6366f1;
+  z-index: 100;
 }
 
-@keyframes loading {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
+.accent {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 900;
+  line-height: 150%;
+  color: #c463f1;
 }
 
-@keyframes shine {
-  to {
-    background-position-x: -200%;
-  }
-}
-
-/* ---------- АНИМАЦИЯ ---------- */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* ---------- АДАПТИВ ---------- */
-@media (max-width: 1200px) {
-  .gallery {
-    column-count: 3;
-  }
-}
-
-@media (max-width: 900px) {
-  .gallery {
-    column-count: 2;
-  }
-
-  .closeButton {
-    top: 1vw;
-    right: 3vw;
+@media (max-width: 1024px) {
+  .expandableText p {
+    font-size: min(2.59067vw, 2.15983vh);
+    font-family: "Inter";
+    font-style: normal;
+    width: 50.66667vw;
+    font-weight: 400;
+    line-height: 150%;
+    margin-top: 1.85185vh;
+    color: #ffffff;
   }
 }
 
 @media (max-width: 600px) {
-  .gallery {
-    column-count: 1;
-  }
-
-  .modalImage {
-    max-height: 60vh;
-  }
-
-  .footer_window_photo {
-    font-size: 14px;
-  }
-
-  .closeButton {
-    top: 1vw;
-    right: 10vw;
+  .expandableText p {
+    width: 60.66667vw;
   }
 }
