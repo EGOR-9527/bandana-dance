@@ -8,14 +8,15 @@ const FilteredPhotos = () => {
   const [photos, setPhotos] = useState([]);
   const [filters, setFilters] = useState(["Все"]);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [loadingFilters, setLoadingFilters] = useState(true);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [initialLoadDone, setInitialLoadDone] = useState(false);
 
   const observer = useRef();
+  const sentinelRef = useRef();
 
-  // Подгружаем фильтры один раз
   useEffect(() => {
     const loadFilters = async () => {
       try {
@@ -34,54 +35,89 @@ const FilteredPhotos = () => {
     loadFilters();
   }, []);
 
-  // Подгружаем фото
   const loadPhotos = useCallback(
-    async (reset = false) => {
-      if (!hasMore && !reset) return;
+    async (pageToLoad = 1, shouldReset = false) => {
+      if ((!hasMore && !shouldReset) || loading) return;
+      
       try {
         setLoading(true);
-        const currentPage = reset ? 1 : page;
-        const galleryRes = await ApiService.getGallery({
-          page: currentPage,
-          limit: 12,
-        });
+        
+        const params = {
+          page: pageToLoad,
+          limit: 12
+        };
+        
+        if (filter !== "Все") {
+          params.filter = filter;
+        }
+        
+        const galleryRes = await ApiService.getGallery(params);
+        
         if (galleryRes.success) {
-          setPhotos((prev) => (reset ? galleryRes.data : [...galleryRes.data]));
+          if (shouldReset) {
+            setPhotos(galleryRes.data);
+          } else {
+            setPhotos(prev => [...prev, ...galleryRes.data]);
+          }
+          
           setHasMore(galleryRes.hasMore);
-          if (!reset) setPage((prev) => prev + 1);
-          else setPage(2);
+          setPage(pageToLoad + 1);
+          
+          if (shouldReset) {
+            setInitialLoadDone(true);
+          }
         }
       } catch (err) {
-        console.error(err);
+        console.error("Ошибка загрузки фото:", err);
       } finally {
         setLoading(false);
       }
     },
-    [page, hasMore]
+    [filter, hasMore, loading]
   );
 
-  // Сбрасываем страницу при смене фильтра
   useEffect(() => {
-    loadPhotos(true);
-  }, [filter, loadPhotos]);
+    if (initialLoadDone) {
+      loadPhotos(1, true);
+    }
+  }, [filter, loadPhotos, initialLoadDone]);
 
-  // Sentinel для ленивой подгрузки
-  const sentinelRef = useCallback(
-    (node) => {
-      if (loading) return;
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          loadPhotos();
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
-    [loading, hasMore, loadPhotos]
-  );
+  useEffect(() => {
+    if (!initialLoadDone) {
+      loadPhotos(1, true);
+    }
+  }, [initialLoadDone, loadPhotos]);
+
+  useEffect(() => {
+    if (!sentinelRef.current || !hasMore || loading) return;
+
+    const options = {
+      root: null,
+      rootMargin: "100px",
+      threshold: 0.1,
+    };
+
+    const handleIntersection = (entries) => {
+      const [entry] = entries;
+      if (entry.isIntersecting && hasMore && !loading) {
+        loadPhotos(page);
+      }
+    };
+
+    observer.current = new IntersectionObserver(handleIntersection, options);
+    observer.current.observe(sentinelRef.current);
+
+    return () => {
+      if (observer.current) {
+        observer.current.disconnect();
+      }
+    };
+  }, [hasMore, loading, page, loadPhotos]);
 
   const filteredPhotos =
-    filter === "Все" ? photos : photos.filter((img) => img.filter === filter);
+    filter === "Все"
+      ? photos
+      : photos.filter((img) => img.filter === filter);
 
   return (
     <section className={style.photo_section}>
@@ -107,6 +143,12 @@ const FilteredPhotos = () => {
           />
         ))}
 
+        {loading && (
+          <div className={style.loadingIndicator}>
+            Загрузка...
+          </div>
+        )}
+
         {!loading && filteredPhotos.length === 0 && (
           <p className={style.noPhotos}>
             {filter === "Все"
@@ -115,8 +157,7 @@ const FilteredPhotos = () => {
           </p>
         )}
 
-        {/* Sentinel для lazy load */}
-        <div ref={sentinelRef}></div>
+        <div ref={sentinelRef} style={{ height: "10px" }} />
       </div>
 
       {selectedImage && (
