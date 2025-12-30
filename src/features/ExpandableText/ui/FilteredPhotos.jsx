@@ -41,11 +41,12 @@ const FilteredPhotos = () => {
       try {
         setLoading(true);
         const currentPage = reset ? 1 : page;
-        const galleryRes = await ApiService.getGallery({ page: currentPage, limit: 12 });
+        const galleryRes = await ApiService.getGallery({
+          page: currentPage,
+          limit: 12,
+        });
         if (galleryRes.success) {
-          setPhotos((prev) =>
-            reset ? galleryRes.data : [...prev, ...galleryRes.data]
-          );
+          setPhotos((prev) => (reset ? galleryRes.data : [...galleryRes.data]));
           setHasMore(galleryRes.hasMore);
           if (!reset) setPage((prev) => prev + 1);
           else setPage(2);
@@ -80,9 +81,7 @@ const FilteredPhotos = () => {
   );
 
   const filteredPhotos =
-    filter === "Все"
-      ? photos
-      : photos.filter((img) => img.filter === filter);
+    filter === "Все" ? photos : photos.filter((img) => img.filter === filter);
 
   return (
     <section className={style.photo_section}>
