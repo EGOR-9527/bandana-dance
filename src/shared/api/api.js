@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const TEST = true;
-const API_BASE = TEST ? "http://localhost:5000" : "https://bandana-dance.ru";
+const API_BASE = import.meta.env.TEST ? "http://localhost:5000" : "https://bandana-dance.ru";
 console.log(API_BASE);
 
 const api = axios.create({
