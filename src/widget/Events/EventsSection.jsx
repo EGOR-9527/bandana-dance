@@ -34,7 +34,7 @@ const EventsSection = () => {
   if (loading) {
     return (
       <div className={style.events}>
-        <Title text="EVENTS" />
+        <Title text="События" />
         <div className={style.container}>
           {[1, 2, 3].map((i) => (
             <div key={i} className={style.skeletonCard} />
@@ -47,7 +47,7 @@ const EventsSection = () => {
   if (events.length === 0) {
     return (
       <div className={style.events}>
-        <Title text="EVENTS" />
+        <Title text="СОБЫТИЯ" />
         <div className={style.container}>
           <EmptyEvent />
         </div>

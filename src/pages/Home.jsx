@@ -24,7 +24,7 @@ const Home = () => {
 
       <Biography />
 
-      <Slider title="PERFORMANCES" />
+      <Slider title="НАШИ ВЫСТУПЛЕНИЯ" />
 
       <Forma/>
 

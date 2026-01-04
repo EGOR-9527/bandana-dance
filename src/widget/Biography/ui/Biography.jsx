@@ -9,7 +9,7 @@ const Biography = () => {
 
   return (
     <section className={styles.biographySection} id="biography">
-      <Title text="BIOGRAPHY" />
+      <Title text="БИОГРАФИЯ" />
 
       <div className={styles.contentContainer}>
         <div className={styles.imageBlock}>

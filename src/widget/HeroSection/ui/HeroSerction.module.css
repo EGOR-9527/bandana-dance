@@ -3,6 +3,11 @@
   src: url("../../../shared/fonts/Roboto.ttf");
 }
 
+@font-face {
+  font-family: "Hayate-Regular";
+  src: url("../../../shared/fonts/Hayate-Regular.ttf");
+}
+
 .hero {
   color: #ffff;
   width: 100%;
@@ -19,7 +24,7 @@
   text-shadow: 0px 0px 31.3px #6366f1;
   transform: matrix(1, 0, 0.02, 1, 0, 0);
   line-height: 21.66667vh;
-  font-family: "Roboto";
+  font-family: "Hayate-Regular";
   font-style: normal;
   font-weight: 900;
 }
