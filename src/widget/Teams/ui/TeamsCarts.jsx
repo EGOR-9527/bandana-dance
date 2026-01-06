@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import styles from "./TeamsCarts.module.css";
 import ApiService from "../../../shared/api/api";
 import { useNavigate } from "react-router-dom";
@@ -6,31 +6,107 @@ import { useNavigate } from "react-router-dom";
 const TeamsCarts = () => {
   const [teams, setTeams] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [loadedImages, setLoadedImages] = useState(new Set());
   const navigate = useNavigate();
+  const observerRef = useRef(null);
+
+  // Инициализация ленивой загрузки изображений
+  const initLazyLoading = useCallback(() => {
+    if (!observerRef.current && 'IntersectionObserver' in window) {
+      observerRef.current = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            const src = img.dataset.src;
+            const thumbnail = img.dataset.thumbnail;
+            
+            // Показываем thumbnail сразу
+            if (thumbnail && !img.src) {
+              img.src = thumbnail;
+              img.classList.add(styles.thumbnailLoaded);
+            }
+            
+            // Загружаем полноразмерное изображение в фоне
+            if (src && !loadedImages.has(src)) {
+              const fullImage = new Image();
+              fullImage.src = src;
+              fullImage.onload = () => {
+                img.src = src;
+                img.classList.add(styles.fullLoaded);
+                setLoadedImages(prev => new Set([...prev, src]));
+              };
+            }
+            
+            observerRef.current.unobserve(img);
+          }
+        });
+      }, {
+        rootMargin: '100px',
+        threshold: 0.1
+      });
+    }
+  }, [loadedImages]);
 
   useEffect(() => {
     const fetchTeams = async () => {
       try {
+        setLoading(true);
+        setError(null);
+        
         const res = await ApiService.getTeams();
-        if (res?.success) setTeams(res.data);
+        
+        if (res?.success) {
+          if (res.stale) {
+            setTeams(res.data);
+            
+            // Фоновая загрузка свежих данных
+            setTimeout(async () => {
+              const freshRes = await ApiService.getTeams();
+              if (freshRes.success && !freshRes.stale) {
+                setTeams(freshRes.data);
+              }
+            }, 1000);
+          } else {
+            setTeams(res.data);
+          }
+        } else {
+          setTeams([]);
+          setError("Не удалось загрузить команды");
+        }
       } catch (e) {
         console.error("Ошибка загрузки команд", e);
+        setError("Ошибка соединения с сервером");
+        setTeams([]);
       } finally {
         setLoading(false);
+        
+        // Инициализируем ленивую загрузку
+        setTimeout(() => {
+          initLazyLoading();
+          if (observerRef.current) {
+            document.querySelectorAll(`.${styles.lazyImage}`).forEach(img => {
+              observerRef.current.observe(img);
+            });
+          }
+        }, 100);
       }
     };
 
     fetchTeams();
-  }, []);
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [initLazyLoading]);
 
   const shouldShowMoreButton = (achievements) => {
     if (!achievements || achievements.length === 0) return false;
-
-    const totalLength = achievements.join(" ").length;
-
-    return achievements.length > 3 || totalLength > 150;
+    return achievements.length > 3 || JSON.stringify(achievements).length > 200;
   };
 
   const openAchievementsModal = (team) => {
@@ -38,17 +114,58 @@ const TeamsCarts = () => {
     setShowModal(true);
   };
 
-  const closeAchievementsModal = () => {
+  const closeAchievementsModal = useCallback(() => {
     setShowModal(false);
-    setSelectedTeam(null);
+    setTimeout(() => setSelectedTeam(null), 300);
+  }, []);
+
+  // Скелетон-заглушки
+  const renderSkeletons = () => {
+    return [1, 2].map((i) => (
+      <div key={i} className={styles.skeletonCard}>
+        <div className={styles.skeletonImageContainer}>
+          <div className={styles.skeletonImage} />
+          <div className={styles.skeletonName} />
+        </div>
+        <div className={styles.skeletonContent}>
+          <div className={styles.skeletonText} />
+          <div className={styles.skeletonTextShort} />
+          <div className={styles.skeletonTextMedium} />
+          <div className={styles.skeletonButton} />
+        </div>
+      </div>
+    ));
   };
 
   if (loading) {
-    return <p className={styles.loading}>Загрузка команд...</p>;
+    return (
+      <div className={styles.container}>
+        {renderSkeletons()}
+      </div>
+    );
+  }
+
+  if (error && teams.length === 0) {
+    return (
+      <div className={styles.errorContainer}>
+        <p className={styles.errorMessage}>{error}</p>
+        <button 
+          className={styles.retryButton}
+          onClick={() => window.location.reload()}
+        >
+          Попробовать снова
+        </button>
+      </div>
+    );
   }
 
   if (!teams.length) {
-    return <p className={styles.loading}>Команды пока отсутствуют</p>;
+    return (
+      <div className={styles.emptyContainer}>
+        <p className={styles.emptyMessage}>Команды пока отсутствуют</p>
+        <p className={styles.emptySubtitle}>Скоро здесь появятся новые команды</p>
+      </div>
+    );
   }
 
   return (
@@ -63,9 +180,10 @@ const TeamsCarts = () => {
                 </div>
                 {team.fileUrl && (
                   <img
-                    src={team.fileUrl}
+                    data-src={team.fileUrl}
+                    data-thumbnail={team.thumbnailUrl || team.fileUrl}
                     alt={team.name}
-                    className={styles.image}
+                    className={`${styles.image} ${styles.lazyImage}`}
                     loading="lazy"
                   />
                 )}
@@ -138,10 +256,11 @@ const TeamsCarts = () => {
                       ))}
 
                       {shouldShowMoreButton(team.achievements) && (
-                        <li className={styles.detailsGrid}>
+                        <li className={styles.achievementActions}>
                           <button
                             className={styles.showMoreButton}
                             onClick={() => openAchievementsModal(team)}
+                            aria-label={`Показать все достижения команды ${team.name}`}
                           >
                             <span className={styles.moreIcon}>🔽</span>
                             <span>
@@ -149,26 +268,24 @@ const TeamsCarts = () => {
                             </span>
                           </button>
 
-                          {team.isRecruiting ? (
+                          {team.isRecruiting && (
                             <button
                               onClick={() => {
                                 navigate("/");
                                 setTimeout(() => {
-                                  const element =
-                                    document.getElementById("forma");
+                                  const element = document.getElementById("forma");
                                   if (element) {
                                     element.scrollIntoView({
                                       behavior: "smooth",
+                                      block: "start"
                                     });
                                   }
-                                }, 500);
+                                }, 100);
                               }}
                               className={styles.buttonRecord}
                             >
                               Записаться
                             </button>
-                          ) : (
-                            ""
                           )}
                         </li>
                       )}
@@ -182,7 +299,10 @@ const TeamsCarts = () => {
       </div>
 
       {showModal && selectedTeam && (
-        <div className={styles.modalOverlay} onClick={closeAchievementsModal}>
+        <div 
+          className={`${styles.modalOverlay} ${showModal ? styles.modalShow : ''}`}
+          onClick={closeAchievementsModal}
+        >
           <div
             className={styles.modalContent}
             onClick={(e) => e.stopPropagation()}
@@ -194,6 +314,7 @@ const TeamsCarts = () => {
               <button
                 className={styles.modalClose}
                 onClick={closeAchievementsModal}
+                aria-label="Закрыть"
               >
                 ✕
               </button>
@@ -210,9 +331,14 @@ const TeamsCarts = () => {
               </ul>
 
               <div className={styles.modalStats}>
-                <span>
-                  Всего достижений: {selectedTeam.achievements.length}
+                <span className={styles.statsItem}>
+                  Всего достижений: <strong>{selectedTeam.achievements.length}</strong>
                 </span>
+                {selectedTeam.city && (
+                  <span className={styles.statsItem}>
+                    Город: <strong>{selectedTeam.city}</strong>
+                  </span>
+                )}
               </div>
             </div>
 
@@ -223,8 +349,34 @@ const TeamsCarts = () => {
               >
                 Закрыть
               </button>
+              {selectedTeam.isRecruiting && (
+                <button
+                  className={styles.modalButtonPrimary}
+                  onClick={() => {
+                    closeAchievementsModal();
+                    navigate("/");
+                    setTimeout(() => {
+                      const element = document.getElementById("forma");
+                      if (element) {
+                        element.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start"
+                        });
+                      }
+                    }, 300);
+                  }}
+                >
+                  Записаться в команду
+                </button>
+              )}
             </div>
           </div>
+        </div>
+      )}
+      
+      {teams.length > 0 && (
+        <div className={styles.cacheInfo}>
+          <small>Данные кэшированы • Обновляются каждые 10 минут</small>
         </div>
       )}
     </>
