@@ -2,23 +2,17 @@ import axios from "axios";
 
 const TEST = false;
 const API_BASE = TEST ? "http://localhost:5000" : "https://bandana-dance.ru";
+console.log(API_BASE);
 
-// УБРАТЬ неправильные заголовки из axios конфигурации!
 const api = axios.create({
   baseURL: API_BASE,
-  timeout: 15000,
+  timeout: 10000,
   headers: {
+    Accept: "application/json",
     "Content-Type": "application/json",
   },
+  validateStatus: (status) => status < 500,
 });
-
-// УБРАТЬ интерцептор с Origin!
-// api.interceptors.request.use(config => {
-//   if (!TEST) {
-//     config.headers['Origin'] = 'https://bandana-dance.ru';
-//   }
-//   return config;
-// });
 
 class ApiService {
   async getEvents() {
@@ -26,33 +20,34 @@ class ApiService {
       const response = await api.get("/api/events");
       return response.data;
     } catch (err) {
-      console.warn("Ошибка загрузки событий:", err.message);
+      console.warn(
+        "События недоступны (возможно, атака или лимит):",
+        err.message
+      );
       return {
         success: false,
         data: [],
-        message: "Сервер временно недоступен"
+        message: "Сервер временно недоступен. Попробуйте позже.",
       };
     }
   }
 
   async getGalleryFilters() {
     try {
-      const response = await api.get("/api/gallery/filters");
+      const response = await api.get("/api/gallery-filters");
       return response.data;
     } catch (err) {
-      console.warn("Ошибка фильтров:", err.message);
+      console.warn("Фильтры галереи не загрузились:", err.message);
       return { success: true, data: ["Все"] };
     }
   }
 
-  async getGallery(page = 1, limit = 24, filter = "Все") {
+  async getGallery() {
     try {
-      const response = await api.get(`/api/gallery`, {
-        params: { page, limit, filter }
-      });
+      const response = await api.get(`/api/gallery`);
       return response.data;
     } catch (err) {
-      console.warn("Ошибка галереи:", err.message);
+      console.warn("Галерея недоступна:", err.message);
       return { success: false, data: [] };
     }
   }
@@ -62,7 +57,7 @@ class ApiService {
       const response = await api.get("/api/teams");
       return response.data;
     } catch (err) {
-      console.warn("Ошибка команд:", err.message);
+      console.warn("Видео недоступны:", err.message);
       return { success: false, data: [] };
     }
   }
@@ -72,7 +67,7 @@ class ApiService {
       const response = await api.get("/api/video");
       return response.data;
     } catch (err) {
-      console.warn("Ошибка видео:", err.message);
+      console.warn("Видео недоступны:", err.message);
       return { success: false, data: [] };
     }
   }
@@ -82,7 +77,7 @@ class ApiService {
       const response = await api.post("/api/contact", data);
       return response.data;
     } catch (err) {
-      console.warn("Ошибка формы:", err.message);
+      console.warn("Ошибка отправки формы:", err.message);
       return { success: false };
     }
   }
