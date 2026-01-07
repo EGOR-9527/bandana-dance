@@ -2,7 +2,6 @@ import axios from "axios";
 
 const TEST = false;
 const API_BASE = TEST ? "http://localhost:5000" : "https://bandana-dance.ru";
-console.log(API_BASE);
 
 const api = axios.create({
   baseURL: API_BASE,

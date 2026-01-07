@@ -14,7 +14,7 @@
 }
 
 .gallery {
-  column-count: 1;
+  column-count: 4;
   column-gap: 20px;
 }
 
